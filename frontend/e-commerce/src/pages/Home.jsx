@@ -1,8 +1,14 @@
 import React from 'react'
+import MainLayout from '../layouts/MainLayout'
 
 function Home() {
   return (
-    <div>Home</div>
+    <MainLayout>
+      <h1 className="text-3xl font-bold">
+        Home Page
+      </h1>
+
+    </MainLayout>
   )
 }
 

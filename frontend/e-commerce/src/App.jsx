@@ -1,11 +1,7 @@
+import AppRoutes from "./routes/AppRoutes";
+
 function App() {
-  return (
-    <div className="bg-black text-white h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold">
-          Lets do ecommerce website
-      </h1>
-    </div>
-  )
+  return <AppRoutes />;
 }
 
-export default App
+export default App;
