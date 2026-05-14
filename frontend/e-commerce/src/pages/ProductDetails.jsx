@@ -2,8 +2,12 @@ import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { products } from "../data/products";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 function StarRating({ rating }) {
+
+
   return (
     <div className="flex items-center gap-0.5">
       {[1,2,3,4,5].map((s) => (
@@ -34,6 +38,7 @@ function ProductDetails() {
   const [qty, setQty] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
+ const { addToCart } = useContext(CartContext);
 
   const related = products.filter((p) => p.category === product?.category && p.id !== product?.id).slice(0, 4);
   const discount = product?.originalPrice
@@ -190,12 +195,30 @@ function ProductDetails() {
             </div>
 
             {/* Add to Cart */}
-            <button className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95 text-sm">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
-              </svg>
-              Add to Cart
-            </button>
+<button
+onClick={() => {
+  addToCart(product,qty);
+  console.log(product);
+}}  
+  className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95 text-sm"
+>
+  <svg
+    width="16"
+    height="16"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1 5h12m-9 0a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z"
+    />
+  </svg>
+
+  Add to Cart
+</button>
 
             {/* Buy Now */}
             <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-purple-200 active:scale-95 text-sm">

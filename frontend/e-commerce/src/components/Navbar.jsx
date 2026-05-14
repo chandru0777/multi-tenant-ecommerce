@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 function Navbar() {
+  const { cartItems } = useContext(CartContext);
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
 
@@ -75,7 +78,12 @@ function Navbar() {
             Cart
             {/* Badge */}
             <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-pink-500 to-rose-500 text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-              0
+              {
+                  cartItems.reduce(
+                  (total, item) => total + item.quantity,
+                        0
+                     )
+                  }
             </span>
           </Link>
 
