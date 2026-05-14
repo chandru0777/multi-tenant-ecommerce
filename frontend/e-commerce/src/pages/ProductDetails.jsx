@@ -197,7 +197,7 @@ function ProductDetails() {
             {/* Add to Cart */}
 <button
 onClick={() => {
-  addToCart(product);
+  addToCart(product,qty);
   console.log(product);
 }}  
   className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95 text-sm"
