@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+
 
 // Context create pannrom
 export const CartContext = createContext();
@@ -7,6 +8,30 @@ function CartProvider({ children }) {
 
   // Cart items store pannrom
   const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+
+  const storedCart =
+    localStorage.getItem("cartItems");
+
+  if (storedCart) {
+
+    setCartItems(
+      JSON.parse(storedCart)
+    );
+
+  }
+
+}, []);
+
+useEffect(() => {
+
+  localStorage.setItem(
+    "cartItems",
+    JSON.stringify(cartItems)
+  );
+
+}, [cartItems]);
 
   // Add to cart function
 const addToCart = (product, qty = 1) => {

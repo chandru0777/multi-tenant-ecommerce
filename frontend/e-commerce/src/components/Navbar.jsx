@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const { cartItems } = useContext(CartContext);
+  const { currentUser, logout } =
+  useContext(AuthContext);
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
 
