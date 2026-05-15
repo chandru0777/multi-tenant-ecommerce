@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 
 import { CartContext } from "../context/CartContext";
 
+import { Link } from "react-router-dom";
 function Cart() {
 
   const {
@@ -182,6 +183,7 @@ function Cart() {
                     className="
                       text-red-500
                       font-semibold
+                      cursor-pointer
                     "
                   >
                     Remove
@@ -274,21 +276,24 @@ function Cart() {
 
                 </div>
 
-                <button
-                  className="
-                    w-full
-                    mt-6
-                    bg-indigo-600
-                    hover:bg-indigo-700
-                    text-white
-                    py-4
-                    rounded-2xl
-                    font-bold
-                    transition
-                  "
+    <Link
+         to="/checkout"
+         className="
+         block
+         w-full
+         mt-6
+         bg-indigo-600
+         hover:bg-indigo-700
+         text-white
+           py-4
+           rounded-2xl
+          font-bold
+           transition
+          text-center
+              "
                 >
-                  Proceed to Checkout
-                </button>
+                Proceed to Checkout
+          </Link>
 
               </div>
 
