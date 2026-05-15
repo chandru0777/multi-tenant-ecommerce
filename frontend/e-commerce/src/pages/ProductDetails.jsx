@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link,useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { products } from "../data/products";
@@ -33,6 +33,8 @@ const BADGE_STYLES = {
 };
 
 function ProductDetails() {
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const product = products.find((item) => item.id === Number(id));
   const [qty, setQty] = useState(1);
@@ -221,10 +223,52 @@ onClick={() => {
 </button>
 
             {/* Buy Now */}
-            <button className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-purple-200 active:scale-95 text-sm">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
+          <button
+                onClick={() =>
+                  navigate("/checkout", {
+                    state: {
+                      buyNowProduct: {
+                        ...product,
+                        quantity: qty
+                      }
+                    }
+                  })
+                }
+                className="
+                  flex-1
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  bg-gradient-to-r
+                  from-indigo-500
+                  to-purple-600
+                  hover:from-purple-500
+                  hover:to-pink-500
+                  text-white
+                  font-bold
+                  px-7
+                  py-3.5
+                  rounded-2xl
+                  transition-all
+                  duration-200
+                  hover:shadow-lg
+                  hover:shadow-purple-200
+                  active:scale-95
+                  text-sm
+                "
+              >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+
               Buy Now
             </button>
 
