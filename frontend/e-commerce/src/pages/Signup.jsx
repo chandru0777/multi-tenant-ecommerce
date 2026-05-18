@@ -8,14 +8,12 @@ import {
   Link
 } from "react-router-dom";
 
-import { AuthContext } from "../context/AuthContext";
 
 function Signup() {
 
   const navigate = useNavigate();
 
-  const { signup } =
-    useContext(AuthContext);
+
 
   const [formData, setFormData] =
     useState({

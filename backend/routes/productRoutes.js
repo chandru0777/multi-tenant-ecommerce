@@ -11,7 +11,7 @@ const {
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
-const upload = require("../middleware/uploadMiddleware"); // ✅ ADDED
+//const upload = require("../middleware/uploadMiddleware"); // ✅ ADDED
 
 // Public route
 router.get("/", getProducts);
@@ -21,7 +21,7 @@ router.post(
   "/",
   protect,
   authorizeRoles("admin", "vendor"),
-  upload.single("image"), // ✅ IMPORTANT
+  //upload.single("image"), // ✅ IMPORTANT
   createProduct
 );
 

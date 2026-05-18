@@ -1,7 +1,7 @@
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const User = require("../models/User");
-const sendEmail = require("../config/mail");
+//const sendEmail = require("../config/mail");
 
 // Place Order
 const placeOrder = async (req, res) => {
@@ -43,13 +43,13 @@ const placeOrder = async (req, res) => {
     const user = await User.findById(userId);
 
     // 📧 SEND EMAIL
-    if (user && user.email) {
-      await sendEmail(
-        user.email,
-        "Order Confirmed",
-        `Your order of ₹${totalPrice} has been placed successfully.`
-      );
-    }
+    // if (user && user.email) {
+    //   await sendEmail(
+    //     user.email,
+    //     "Order Confirmed",
+    //     `Your order of ₹${totalPrice} has been placed successfully.`
+    //   );
+    // }
 
     // clear cart
     await Cart.deleteMany({ user: userId });

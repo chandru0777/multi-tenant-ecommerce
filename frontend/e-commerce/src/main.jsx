@@ -7,7 +7,6 @@ import "./index.css";
 
 import CartProvider from "./context/CartContext";
 
-import AuthProvider from "./context/AuthContext";
 
 ReactDOM.createRoot(
   document.getElementById("root")
@@ -15,14 +14,14 @@ ReactDOM.createRoot(
 
   <React.StrictMode>
 
-  <AuthProvider>
+
 
             <CartProvider>
 
                 <App />
 
             </CartProvider>
-  </AuthProvider>
+ 
 
   </React.StrictMode>
 
