@@ -8,14 +8,12 @@ import {
   Link
 } from "react-router-dom";
 
-import { AuthContext } from "../context/AuthContext";
 
 function Login() {
 
   const navigate = useNavigate();
 
-  const { login } =
-    useContext(AuthContext);
+
 
   const [email, setEmail] =
     useState("");

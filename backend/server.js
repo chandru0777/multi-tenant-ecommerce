@@ -13,9 +13,9 @@ const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-const paymentRoutes = require("./routes/paymentRoutes");
+//const paymentRoutes = require("./routes/paymentRoutes");
 const storeRoutes = require("./routes/storeRoutes"); // ✅ ADDED
-const analyticsRoutes = require("./routes/analyticsRoutes");
+//const analyticsRoutes = require("./routes/analyticsRoutes");
 
 connectDB();
 
@@ -37,9 +37,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
-app.use("/api/payment", paymentRoutes);
+//app.use("/api/payment", paymentRoutes);
 app.use("/api/store", storeRoutes); // ✅ ADDED
-app.use("/api/analytics", analyticsRoutes);
+//app.use("/api/analytics", analyticsRoutes);
 
 // TEST ROUTE
 app.get("/", (req, res) => {
