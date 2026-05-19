@@ -40,6 +40,11 @@ function ProductCard({ product }) {
         <img
           src={product.image}
           alt={product.name}
+          loading="lazy"
+            onError={(e) => {
+              e.target.src =
+                "https://via.placeholder.com/600x400?text=Product+Image";
+            }}
           className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
           style={{ "--tw-scale-x": "1.08", "--tw-scale-y": "1.08" }}
         />
