@@ -7,6 +7,7 @@ const {
   getProducts,
   updateProduct,
   deleteProduct,
+  getProductsByCategory
 } = require("../controllers/productController");
 
 const protect = require("../middleware/authMiddleware");
@@ -15,6 +16,11 @@ const authorizeRoles = require("../middleware/roleMiddleware");
 
 // Public route
 router.get("/", getProducts);
+
+router.get(
+  "/category/:category",
+  getProductsByCategory
+);
 
 // Admin & Vendor only
 router.post(

@@ -106,7 +106,7 @@ function Navbar() {
           {[
             ["📱", "Mobiles"],
             ["👗", "Fashion"],
-            ["🏠", "Home & Living"],
+            ["🏠", "Home-Living"],
             ["💄", "Beauty"],
             ["📚", "Books"],
             ["⚽", "Sports"],

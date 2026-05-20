@@ -38,16 +38,24 @@ function ProductCard({ product }) {
       {/* Image */}
       <div className="relative overflow-hidden bg-gray-50 aspect-[4/3]">
         <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-            onError={(e) => {
-              e.target.src =
-                "https://via.placeholder.com/600x400?text=Product+Image";
-            }}
-          className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-          style={{ "--tw-scale-x": "1.08", "--tw-scale-y": "1.08" }}
-        />
+              src={`${product.image}?w=600&q=80`}
+              alt={product.name}
+              loading="lazy"
+              onError={(e) => {
+
+                e.target.src =
+                  "https://via.placeholder.com/600x400?text=Product";
+
+              }}
+              className="
+                w-full
+                h-full
+                object-cover
+                group-hover:scale-105
+                transition-transform
+                duration-500
+              "
+            />
 
         {/* Discount badge */}
         {discount && (

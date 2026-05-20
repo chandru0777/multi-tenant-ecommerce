@@ -1,64 +1,214 @@
+import { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 
 import ProductCard from "../components/ProductCard";
 
-import { products } from "../data/products";
-
 function Category() {
 
-  // URL category edukkrom
-  const { name } = useParams();
+  const { categoryName } = useParams();
 
-  // Matching products filter pannrom
-  const filteredProducts = products.filter(
-    (product) => product.category === name
-  );
+  const [products, setProducts] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  useEffect(() => {
+
+    const fetchCategoryProducts =
+      async () => {
+
+        try {
+
+          const response =
+            await fetch(
+
+`http://localhost:8000/api/products/category/${categoryName}`
+
+            );
+
+          const data =
+            await response.json();
+
+          // MongoDB _id → id
+          const formattedProducts =
+            data.map((product) => ({
+
+              ...product,
+
+              id: product._id,
+
+            }));
+
+          setProducts(
+            formattedProducts
+          );
+
+        } catch (error) {
+
+          console.log(error);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      };
+
+    fetchCategoryProducts();
+
+  }, [categoryName]);
+
+  // Loading UI
+  if (loading) {
+
+    return (
+
+      <MainLayout>
+
+        <div
+          className="
+            flex
+            justify-center
+            items-center
+            py-40
+          "
+        >
+
+          <h1
+            className="
+              text-3xl
+              font-bold
+              text-indigo-600
+            "
+          >
+            Loading Products...
+          </h1>
+
+        </div>
+
+      </MainLayout>
+
+    );
+
+  }
 
   return (
 
     <MainLayout>
 
-      {/* Category Heading */}
-      <div className="mt-6 mb-10">
+      {/* Banner */}
+      <section
+        className="
+          mt-8
+          rounded-3xl
+          overflow-hidden
+          bg-gradient-to-r
+          from-indigo-600
+          to-purple-600
+          px-8
+          py-14
+          text-white
+        "
+      >
+
+        <p
+          className="
+            text-sm
+            uppercase
+            tracking-widest
+            mb-2
+            text-indigo-100
+          "
+        >
+          Explore Category
+        </p>
 
         <h1
           className="
             text-4xl
-            font-extrabold
-            text-gray-800
+            font-black
             capitalize
           "
         >
-          {name} Products
+          {categoryName}
         </h1>
 
-        <p className="text-gray-500 mt-2">
-          Explore trending {name} products
+        <p
+          className="
+            mt-3
+            text-indigo-100
+            max-w-xl
+          "
+        >
+          Discover premium products,
+          exciting offers, and trending
+          collections in {categoryName}.
         </p>
 
-      </div>
+      </section>
 
-      {/* Empty State */}
-      {filteredProducts.length === 0 ? (
+      {/* Products */}
+      <section className="mt-12">
 
         <div
           className="
-            text-center
-            py-20
+            flex
+            items-center
+            justify-between
+            mb-8
           "
         >
 
-          <h2 className="text-3xl font-bold text-gray-700">
-            No Products Found
-          </h2>
+          <div>
+
+            <p
+              className="
+                text-xs
+                font-bold
+                uppercase
+                tracking-widest
+                text-gray-400
+                mb-1
+              "
+            >
+              Category Products
+            </p>
+
+            <h2
+              className="
+                text-3xl
+                font-extrabold
+                capitalize
+                text-gray-900
+              "
+            >
+              {categoryName}
+            </h2>
+
+          </div>
+
+          <span
+            className="
+              text-sm
+              font-semibold
+              text-indigo-600
+              bg-indigo-50
+              px-4
+              py-2
+              rounded-xl
+            "
+          >
+            {products.length} Products
+          </span>
 
         </div>
 
-      ) : (
-
-        /* Products Grid */
+        {/* Grid */}
         <div
           className="
             grid
@@ -66,11 +216,11 @@ function Category() {
             sm:grid-cols-2
             md:grid-cols-3
             lg:grid-cols-4
-            gap-8
+            gap-6
           "
         >
 
-          {filteredProducts.map((product) => (
+          {products.map((product) => (
 
             <ProductCard
               key={product.id}
@@ -81,11 +231,12 @@ function Category() {
 
         </div>
 
-      )}
+      </section>
 
     </MainLayout>
 
   );
+
 }
 
 export default Category;
