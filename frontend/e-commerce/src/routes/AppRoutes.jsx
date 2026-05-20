@@ -16,7 +16,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
 
         <Route
-          path="/category/:name"
+          path="/category/:categoryName"
           element={<Category />}
         />
 

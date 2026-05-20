@@ -81,7 +81,7 @@ function ProductDetails() {
         <div className="space-y-3">
           <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden border border-gray-100 shadow-sm group">
             <img
-              src={product.image}
+              src={`${product.image}?w=900&q=80`}
               alt={product.name}
               className="w-full h-[460px] object-cover group-hover:scale-105 transition-transform duration-500"
             />
@@ -115,7 +115,7 @@ function ProductDetails() {
           <div className="flex gap-2">
             {[0,1,2,3].map((i) => (
               <div key={i} className={`flex-1 h-16 rounded-xl overflow-hidden border-2 cursor-pointer transition-all duration-200 ${i === 0 ? "border-indigo-500 shadow-md" : "border-gray-100 opacity-60 hover:opacity-100"}`}>
-                <img src={product.image} alt="" className="w-full h-full object-cover" />
+                <img src={`${product.image}?w=900&q=80`} alt="" className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
