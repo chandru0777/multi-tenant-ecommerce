@@ -8,7 +8,8 @@ const {
   updateProduct,
   deleteProduct,
   getProductsByCategory,
-  getSingleProduct
+  getSingleProduct,
+  searchProducts
 } = require("../controllers/productController");
 
 const protect = require("../middleware/authMiddleware");
@@ -26,6 +27,11 @@ router.get(
 router.get(
   "/:id",
   getSingleProduct
+);
+
+router.get(
+  "/search/:query",
+  searchProducts
 );
 
 // Admin & Vendor only

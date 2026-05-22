@@ -1,9 +1,27 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const { cartItems } = useContext(CartContext);
+
+  const [search, setSearch] =
+  useState("");
+
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+
+  e.preventDefault();
+
+  if (!search.trim()) return;
+
+  navigate(
+    `/search/${search}`
+  );
+
+};
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -23,21 +41,61 @@ function Navbar() {
         </Link>
 
         {/* Search Bar */}
-        <div className="relative w-[42%]">
-          <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-            width="16" height="16" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" strokeWidth="2.2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search for products, brands and more..."
-            className="w-full bg-gray-100 border border-transparent rounded-2xl pl-11 pr-5 py-2.5 text-sm text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:border-purple-400 focus:ring-4 focus:ring-purple-100 transition-all duration-200"
-          />
-        </div>
+       <form
+              onSubmit={handleSearch}
+              className="relative w-[42%]"
+            >
+
+              <svg
+                className="
+                  absolute
+                  left-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-gray-400
+                  pointer-events-none
+                "
+                width="16"
+                height="16"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+
+              <input
+                type="text"
+                placeholder="Search for products, brands and more..."
+                value={search}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                className="
+                  w-full
+                  bg-gray-100
+                  border
+                  border-transparent
+                  rounded-2xl
+                  pl-11
+                  pr-5
+                  py-2.5
+                  text-sm
+                  text-gray-800
+                  placeholder-gray-400
+                  outline-none
+                  focus:bg-white
+                  focus:border-purple-400
+                  focus:ring-4
+                  focus:ring-purple-100
+                  transition-all
+                  duration-200
+                "
+              />
+
+            </form>
 
         {/* Right Side */}
         <div className="flex items-center gap-5 shrink-0">
