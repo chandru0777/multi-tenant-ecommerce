@@ -14,7 +14,7 @@ const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 //const paymentRoutes = require("./routes/paymentRoutes");
-const storeRoutes = require("./routes/storeRoutes"); // ✅ ADDED
+const storeRoutes = require("./routes/storeRoutes"); 
 //const analyticsRoutes = require("./routes/analyticsRoutes");
 
 connectDB();

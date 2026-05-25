@@ -1,47 +1,120 @@
-import {
-  useContext,
-  useState
-} from "react";
+import { useState } from "react";
 
 import {
-  useNavigate,
-  Link
+  Link,
+  useNavigate
 } from "react-router-dom";
-
 
 function Signup() {
 
-  const navigate = useNavigate();
+  const [name, setName] =
+    useState("");
 
+  const [email, setEmail] =
+    useState("");
 
+  const [password, setPassword] =
+    useState("");
 
-  const [formData, setFormData] =
-    useState({
-      name: "",
-      email: "",
-      password: ""
-    });
+  const [loading, setLoading] =
+    useState(false);
 
-  // Input change
-  const handleChange = (e) => {
+  const [error, setError] =
+    useState("");
 
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const navigate =
+    useNavigate();
 
-  };
+  // Signup Function
+  const handleSignup =
+    async (e) => {
 
-  // Submit
-  const handleSubmit = (e) => {
+      e.preventDefault();
 
-    e.preventDefault();
+      setLoading(true);
 
-    signup(formData);
+      setError("");
 
-    navigate("/");
+      try {
 
-  };
+        const response =
+          await fetch(
+
+"http://localhost:8000/api/auth/register",
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              body: JSON.stringify({
+
+                name,
+                email,
+                password,
+
+              }),
+
+            }
+
+          );
+
+        const data =
+          await response.json();
+
+        // Backend Error
+        if (!response.ok) {
+
+          setError(
+            data.message
+          );
+
+          setLoading(false);
+
+          return;
+
+        }
+
+        // Save Token
+        localStorage.setItem(
+          "token",
+          data.token
+        );
+
+        // Save User
+        localStorage.setItem(
+          "user",
+
+          JSON.stringify(
+            data.user
+          )
+
+        );
+        console.log("Signup Success");
+        // Navigate Home
+        navigate("/");
+
+      } catch (error) {
+
+        console.log(error);
+
+        setError(
+          "Something went wrong"
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
 
   return (
 
@@ -57,7 +130,9 @@ function Signup() {
     >
 
       <form
-        onSubmit={handleSubmit}
+
+        onSubmit={handleSignup}
+
         className="
           bg-white
           shadow-sm
@@ -84,13 +159,38 @@ function Signup() {
 
         <div className="space-y-5">
 
+          {/* Error */}
+          {
+            error && (
+
+              <p
+                className="
+                  text-red-500
+                  text-sm
+                  text-center
+                "
+              >
+                {error}
+              </p>
+
+            )
+          }
+
+          {/* Name */}
           <input
             type="text"
-            name="name"
             placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
+
+            value={name}
+
+            onChange={(e) =>
+              setName(
+                e.target.value
+              )
+            }
+
             required
+
             className="
               w-full
               border
@@ -103,13 +203,21 @@ function Signup() {
             "
           />
 
+          {/* Email */}
           <input
             type="email"
-            name="email"
             placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
+
+            value={email}
+
+            onChange={(e) =>
+              setEmail(
+                e.target.value
+              )
+            }
+
             required
+
             className="
               w-full
               border
@@ -122,13 +230,21 @@ function Signup() {
             "
           />
 
+          {/* Password */}
           <input
             type="password"
-            name="password"
             placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
+
+            value={password}
+
+            onChange={(e) =>
+              setPassword(
+                e.target.value
+              )
+            }
+
             required
+
             className="
               w-full
               border
@@ -141,8 +257,12 @@ function Signup() {
             "
           />
 
+          {/* Button */}
           <button
             type="submit"
+
+            disabled={loading}
+
             className="
               w-full
               bg-indigo-600
@@ -154,11 +274,18 @@ function Signup() {
               transition
             "
           >
-            Signup
+
+            {
+              loading
+                ? "Creating Account..."
+                : "Signup"
+            }
+
           </button>
 
         </div>
 
+        {/* Login Link */}
         <p
           className="
             text-center
@@ -167,10 +294,12 @@ function Signup() {
             mt-6
           "
         >
+
           Already have an account?
 
           <Link
             to="/login"
+
             className="
               text-indigo-600
               font-semibold
@@ -187,6 +316,7 @@ function Signup() {
     </div>
 
   );
+
 }
 
 export default Signup;
