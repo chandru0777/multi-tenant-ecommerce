@@ -1,132 +1,104 @@
-import { createContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
+import {
+  useAuth
+} from "./AuthContext";
 
-// Context create pannrom
-export const CartContext = createContext();
+export const CartContext =
+  createContext();
 
-function CartProvider({ children }) {
+function CartProvider({
+  children,
+}) {
 
-  // Cart items store pannrom
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] =
+    useState([]);
 
+  const [loading, setLoading] =
+    useState(true);
+
+  const { token } =
+    useAuth();
+
+  // Fetch cart
+  const fetchCart =
+    async () => {
+
+      if (!token) {
+
+        setCartItems([]);
+
+        setLoading(false);
+
+        return;
+
+      }
+
+      try {
+
+        const response =
+          await fetch(
+
+"http://localhost:8000/api/cart",
+
+            {
+
+              headers: {
+
+                Authorization:
+`Bearer ${token}`,
+
+              },
+
+            }
+
+          );
+
+        const data =
+          await response.json();
+
+        setCartItems(data);
+
+      } catch (error) {
+
+        console.log(error);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+  // Load cart
   useEffect(() => {
 
-  const storedCart =
-    localStorage.getItem("cartItems");
+    fetchCart();
 
-  if (storedCart) {
-
-    setCartItems(
-      JSON.parse(storedCart)
-    );
-
-  }
-
-}, []);
-
-useEffect(() => {
-
-  localStorage.setItem(
-    "cartItems",
-    JSON.stringify(cartItems)
-  );
-
-}, [cartItems]);
-
-  // Add to cart function
-const addToCart = (product, qty = 1) => {
-
-  const existingProduct = cartItems.find(
-    (item) => item.id === product.id
-  );
-
-  if (existingProduct) {
-
-    const updatedCart = cartItems.map((item) =>
-
-      item.id === product.id
-        ? {
-            ...item,
-            quantity: item.quantity + qty
-          }
-        : item
-
-    );
-
-    setCartItems(updatedCart);
-
-  } else {
-
-    setCartItems([
-      ...cartItems,
-      {
-        ...product,
-        quantity: qty
-      }
-    ]);
-
-  }
-
-};
-
-  // Remove product
-  const removeFromCart = (id) => {
-
-    const updatedCart = cartItems.filter(
-      (item) => item.id !== id
-    );
-
-    setCartItems(updatedCart);
-
-  };
-
-  const increaseQuantity = (id) => {
-
-  const updatedCart = cartItems.map((item) =>
-
-    item.id === id
-      ? {
-          ...item,
-          quantity: item.quantity + 1
-        }
-      : item
-
-  );
-
-  setCartItems(updatedCart);
-
-};
-
-const decreaseQuantity = (id) => {
-
-  const updatedCart = cartItems.map((item) =>
-
-    item.id === id
-      ? {
-          ...item,
-          quantity:
-            item.quantity > 1
-              ? item.quantity - 1
-              : 1
-        }
-      : item
-
-  );
-
-  setCartItems(updatedCart);
-
-};
+  }, [token]);
 
   return (
 
     <CartContext.Provider
+
       value={{
+
         cartItems,
-        addToCart,
-        removeFromCart,
-        increaseQuantity,
-        decreaseQuantity
+
+        setCartItems,
+
+        fetchCart,
+
+        loading,
+
       }}
+
     >
 
       {children}
@@ -134,6 +106,10 @@ const decreaseQuantity = (id) => {
     </CartContext.Provider>
 
   );
+
 }
 
 export default CartProvider;
+
+export const useCart =
+  () => useContext(CartContext);

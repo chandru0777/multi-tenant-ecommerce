@@ -1,11 +1,12 @@
 import { useState } from "react";
+import {  useAuth} from "../context/AuthContext";
 
-import {
-  Link,
-  useNavigate
-} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 
 function Signup() {
+
+  const { login } =
+  useAuth();
 
   const [name, setName] =
     useState("");
@@ -81,21 +82,12 @@ function Signup() {
 
         }
 
-        // Save Token
-        localStorage.setItem(
-          "token",
-          data.token
-        );
+          login(
+            data.user,
+            data.token
+          );
 
-        // Save User
-        localStorage.setItem(
-          "user",
-
-          JSON.stringify(
-            data.user
-          )
-
-        );
+          
         console.log("Signup Success");
         // Navigate Home
         navigate("/");

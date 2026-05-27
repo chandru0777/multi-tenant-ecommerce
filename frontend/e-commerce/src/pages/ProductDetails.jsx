@@ -3,6 +3,8 @@ import { useState,useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { useAuth }from "../context/AuthContext";
+import {useCart} from "../context/CartContext";
 
 function StarRating({ rating }) {
 
@@ -39,6 +41,9 @@ function ProductDetails() {
   const [wishlisted, setWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
  const { addToCart } = useContext(CartContext);
+ const { token } = useAuth();
+
+const { fetchCart } =useCart();
 
  const [product, setProduct] =
   useState(null);
@@ -178,6 +183,67 @@ const [related, setRelated] =
     );
   }
 
+  const handleAddToCart =
+                  async () => {
+
+                    // Not logged in
+                    if (!token) {
+
+                      navigate("/login");
+
+                      return;
+
+                    }
+
+                    try {
+
+                      const response =
+                        await fetch(
+
+                "http://localhost:8000/api/cart",
+
+                          {
+
+                            method: "POST",
+
+                            headers: {
+
+                              "Content-Type":
+                                "application/json",
+
+                              Authorization:
+                `Bearer ${token}`,
+
+                            },
+
+                            body: JSON.stringify({
+
+                              productId:
+                                product.id,
+
+                              quantity: qty,
+
+                            }),
+
+                          }
+
+                        );
+
+                      const data =
+                        await response.json();
+
+                      console.log(data);
+
+                      fetchCart();
+
+                    } catch (error) {
+
+                      console.log(error);
+
+                    }
+
+                };
+
   return (
     <MainLayout>
 
@@ -314,10 +380,7 @@ const [related, setRelated] =
 
             {/* Add to Cart */}
           <button
-                onClick={() => {
-                  addToCart(product,qty);
-                  
-                }}  
+               onClick={handleAddToCart} 
                   className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95 text-sm"
                 >
                   <svg

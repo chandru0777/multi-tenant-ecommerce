@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
-import { CartContext } from "../context/CartContext";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {  useAuth} from "../context/AuthContext";
+import { useCart} from "../context/CartContext";
 
 function Navbar() {
-  const { cartItems } = useContext(CartContext);
+
+  const { cartItems } =useCart();
+
+  const {  user,  logout} = useAuth();
 
   const [search, setSearch] =
   useState("");
@@ -22,6 +26,17 @@ function Navbar() {
   );
 
 };
+
+const cartCount =
+  cartItems.reduce(
+
+    (total, item) =>
+
+      total + item.quantity,
+
+    0
+
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -101,13 +116,101 @@ function Navbar() {
         <div className="flex items-center gap-5 shrink-0">
 
           {/* Login */}
-          <Link
-            to="/login"
-            className="relative text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors duration-200 group"
-          >
-            Login
-            <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 group-hover:w-full transition-all duration-300" />
-          </Link>
+          {
+                  user ? (
+
+                    <div
+                      className="
+                        flex
+                        items-center
+                        gap-3
+                      "
+                    >
+
+                      {/* User Icon */}
+                      <div
+                        className="
+                          w-10
+                          h-10
+                          rounded-full
+                          bg-indigo-100
+                          text-indigo-700
+                          flex
+                          items-center
+                          justify-center
+                          font-bold
+                          text-sm
+                        "
+                      >
+                        {
+                          user.name[0]
+                            .toUpperCase()
+                        }
+                      </div>
+
+                      {/* Name */}
+                      <div
+                        className="
+                          hidden
+                          md:block
+                        "
+                      >
+
+                        <p
+                          className="
+                            text-sm
+                            font-bold
+                            text-gray-800
+                          "
+                        >
+                          {user.name}
+                        </p>
+
+                        <p
+                          className="
+                            text-xs
+                            text-gray-400
+                          "
+                        >
+                          {user.role}
+                        </p>
+
+                      </div>
+
+                      {/* Logout */}
+                      <button
+
+                        onClick={logout}
+
+                        className="
+                          text-sm
+                          font-semibold
+                          text-red-500
+                          hover:text-red-600
+                        "
+                      >
+                        Logout
+                      </button>
+
+                    </div>
+
+                  ) : (
+
+                    <Link
+                      to="/login"
+
+                      className="
+                        text-sm
+                        font-semibold
+                        text-gray-700
+                        hover:text-indigo-600
+                      "
+                    >
+                      Login
+                    </Link>
+
+                  )
+                }
 
           {/* Signup */}
           <Link
@@ -137,12 +240,7 @@ function Navbar() {
             Cart
             {/* Badge */}
             <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-pink-500 to-rose-500 text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-              {
-                  cartItems.reduce(
-                  (total, item) => total + item.quantity,
-                        0
-                     )
-                  }
+            {cartCount}
             </span>
           </Link>
 
