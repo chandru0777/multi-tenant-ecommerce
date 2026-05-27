@@ -7,6 +7,7 @@ import Cart from "../pages/Cart";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Checkout from "../pages/Checkout";
+import SearchResults from "../pages/SearchResults";
 
 function AppRoutes() {
   return (
@@ -23,6 +24,11 @@ function AppRoutes() {
         <Route
           path="/product/:id"
           element={<ProductDetails />}
+        />
+
+        <Route
+          path="/search/:query"
+          element={<SearchResults />}
         />
 
         <Route path="/cart" element={<Cart />} />

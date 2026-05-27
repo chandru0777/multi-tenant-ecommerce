@@ -1,9 +1,10 @@
 import { useParams, Link,useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { products } from "../data/products";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { useAuth }from "../context/AuthContext";
+import {useCart} from "../context/CartContext";
 
 function StarRating({ rating }) {
 
@@ -36,16 +37,136 @@ function ProductDetails() {
 
   const navigate = useNavigate();
   const { id } = useParams();
-  const product = products.find((item) => item.id === Number(id));
   const [qty, setQty] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
  const { addToCart } = useContext(CartContext);
+ const { token } = useAuth();
 
-  const related = products.filter((p) => p.category === product?.category && p.id !== product?.id).slice(0, 4);
+const { fetchCart } =useCart();
+
+ const [product, setProduct] =
+  useState(null);
+
+const [loading, setLoading] =
+  useState(true);
+
+const [related, setRelated] =
+  useState([]);
+
+
+
+  useEffect(() => {
+
+  const fetchProduct =
+    async () => {
+
+      try {
+
+        const response =
+          await fetch(
+
+`http://localhost:8000/api/products/${id}`
+
+          );
+
+        const data =
+          await response.json();
+
+        const formattedProduct = {
+
+          ...data,
+
+          id: data._id,
+
+        };
+
+        setProduct(
+          formattedProduct
+        );
+
+        // Fetch related products
+        const relatedResponse =
+          await fetch(
+
+`http://localhost:8000/api/products/category/${data.category}`
+
+          );
+
+        const relatedData =
+          await relatedResponse.json();
+
+        const formattedRelated =
+          relatedData
+            .filter(
+              (p) => p._id !== data._id
+            )
+            .slice(0, 4)
+            .map((p) => ({
+
+              ...p,
+
+              id: p._id,
+
+            }));
+
+        setRelated(
+          formattedRelated
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+  fetchProduct();
+
+}, [id]);
+
   const discount = product?.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
+
+
+  if (loading) {
+
+  return (
+
+    <MainLayout>
+
+      <div
+        className="
+          flex
+          justify-center
+          items-center
+          py-40
+        "
+      >
+
+        <h1
+          className="
+            text-3xl
+            font-bold
+            text-indigo-600
+          "
+        >
+          Loading Product...
+        </h1>
+
+      </div>
+
+    </MainLayout>
+
+  );
+
+}
 
   if (!product) {
     return (
@@ -61,6 +182,67 @@ function ProductDetails() {
       </MainLayout>
     );
   }
+
+  const handleAddToCart =
+                  async () => {
+
+                    // Not logged in
+                    if (!token) {
+
+                      navigate("/login");
+
+                      return;
+
+                    }
+
+                    try {
+
+                      const response =
+                        await fetch(
+
+                "http://localhost:8000/api/cart",
+
+                          {
+
+                            method: "POST",
+
+                            headers: {
+
+                              "Content-Type":
+                                "application/json",
+
+                              Authorization:
+                `Bearer ${token}`,
+
+                            },
+
+                            body: JSON.stringify({
+
+                              productId:
+                                product.id,
+
+                              quantity: qty,
+
+                            }),
+
+                          }
+
+                        );
+
+                      const data =
+                        await response.json();
+
+                      console.log(data);
+
+                      fetchCart();
+
+                    } catch (error) {
+
+                      console.log(error);
+
+                    }
+
+                };
 
   return (
     <MainLayout>
@@ -197,30 +379,27 @@ function ProductDetails() {
             </div>
 
             {/* Add to Cart */}
-<button
-onClick={() => {
-  addToCart(product,qty);
-  console.log(product);
-}}  
-  className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95 text-sm"
->
-  <svg
-    width="16"
-    height="16"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth="2"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1 5h12m-9 0a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z"
-    />
-  </svg>
+          <button
+               onClick={handleAddToCart} 
+                  className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95 text-sm"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1 5h12m-9 0a1 1 0 100 2 1 1 0 000-2zm8 0a1 1 0 100 2 1 1 0 000-2z"
+                    />
+                  </svg>
 
-  Add to Cart
-</button>
+                  Add to Cart
+          </button>
 
             {/* Buy Now */}
           <button

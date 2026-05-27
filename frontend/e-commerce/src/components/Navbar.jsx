@@ -1,9 +1,42 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import {  useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {  useAuth} from "../context/AuthContext";
+import { useCart} from "../context/CartContext";
 
 function Navbar() {
-  const { cartItems } = useContext(CartContext);
+
+  const { cartItems } =useCart();
+
+  const {  user,  logout} = useAuth();
+
+  const [search, setSearch] =
+  useState("");
+
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+
+  e.preventDefault();
+
+  if (!search.trim()) return;
+
+  navigate(
+    `/search/${search}`
+  );
+
+};
+
+const cartCount =
+  cartItems.reduce(
+
+    (total, item) =>
+
+      total + item.quantity,
+
+    0
+
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -23,33 +56,161 @@ function Navbar() {
         </Link>
 
         {/* Search Bar */}
-        <div className="relative w-[42%]">
-          <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-            width="16" height="16" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" strokeWidth="2.2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.35-4.35" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search for products, brands and more..."
-            className="w-full bg-gray-100 border border-transparent rounded-2xl pl-11 pr-5 py-2.5 text-sm text-gray-800 placeholder-gray-400 outline-none focus:bg-white focus:border-purple-400 focus:ring-4 focus:ring-purple-100 transition-all duration-200"
-          />
-        </div>
+       <form
+              onSubmit={handleSearch}
+              className="relative w-[42%]"
+            >
+
+              <svg
+                className="
+                  absolute
+                  left-4
+                  top-1/2
+                  -translate-y-1/2
+                  text-gray-400
+                  pointer-events-none
+                "
+                width="16"
+                height="16"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+
+              <input
+                type="text"
+                placeholder="Search for products, brands and more..."
+                value={search}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                className="
+                  w-full
+                  bg-gray-100
+                  border
+                  border-transparent
+                  rounded-2xl
+                  pl-11
+                  pr-5
+                  py-2.5
+                  text-sm
+                  text-gray-800
+                  placeholder-gray-400
+                  outline-none
+                  focus:bg-white
+                  focus:border-purple-400
+                  focus:ring-4
+                  focus:ring-purple-100
+                  transition-all
+                  duration-200
+                "
+              />
+
+            </form>
 
         {/* Right Side */}
         <div className="flex items-center gap-5 shrink-0">
 
           {/* Login */}
-          <Link
-            to="/login"
-            className="relative text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors duration-200 group"
-          >
-            Login
-            <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 group-hover:w-full transition-all duration-300" />
-          </Link>
+          {
+                  user ? (
+
+                    <div
+                      className="
+                        flex
+                        items-center
+                        gap-3
+                      "
+                    >
+
+                      {/* User Icon */}
+                      <div
+                        className="
+                          w-10
+                          h-10
+                          rounded-full
+                          bg-indigo-100
+                          text-indigo-700
+                          flex
+                          items-center
+                          justify-center
+                          font-bold
+                          text-sm
+                        "
+                      >
+                        {
+                          user.name[0]
+                            .toUpperCase()
+                        }
+                      </div>
+
+                      {/* Name */}
+                      <div
+                        className="
+                          hidden
+                          md:block
+                        "
+                      >
+
+                        <p
+                          className="
+                            text-sm
+                            font-bold
+                            text-gray-800
+                          "
+                        >
+                          {user.name}
+                        </p>
+
+                        <p
+                          className="
+                            text-xs
+                            text-gray-400
+                          "
+                        >
+                          {user.role}
+                        </p>
+
+                      </div>
+
+                      {/* Logout */}
+                      <button
+
+                        onClick={logout}
+
+                        className="
+                          text-sm
+                          font-semibold
+                          text-red-500
+                          hover:text-red-600
+                        "
+                      >
+                        Logout
+                      </button>
+
+                    </div>
+
+                  ) : (
+
+                    <Link
+                      to="/login"
+
+                      className="
+                        text-sm
+                        font-semibold
+                        text-gray-700
+                        hover:text-indigo-600
+                      "
+                    >
+                      Login
+                    </Link>
+
+                  )
+                }
 
           {/* Signup */}
           <Link
@@ -79,12 +240,7 @@ function Navbar() {
             Cart
             {/* Badge */}
             <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-pink-500 to-rose-500 text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-              {
-                  cartItems.reduce(
-                  (total, item) => total + item.quantity,
-                        0
-                     )
-                  }
+            {cartCount}
             </span>
           </Link>
 

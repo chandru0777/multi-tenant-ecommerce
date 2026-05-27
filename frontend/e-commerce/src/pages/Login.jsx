@@ -1,19 +1,12 @@
-import {
-  useContext,
-  useState
-} from "react";
+import { useState } from "react";
+import {  useAuth} from "../context/AuthContext";
 
-import {
-  useNavigate,
-  Link
-} from "react-router-dom";
-
+import {  Link,  useNavigate} from "react-router-dom";
 
 function Login() {
 
-  const navigate = useNavigate();
-
-
+  const { login } =
+  useAuth();
 
   const [email, setEmail] =
     useState("");
@@ -21,30 +14,96 @@ function Login() {
   const [password, setPassword] =
     useState("");
 
+  const [loading, setLoading] =
+    useState(false);
+
   const [error, setError] =
     useState("");
 
-  // Submit
-  const handleSubmit = (e) => {
+  const navigate =
+    useNavigate();
 
-    e.preventDefault();
+  // Login Function
+  const handleLogin =
+    async (e) => {
 
-    const success =
-      login(email, password);
+      e.preventDefault();
 
-    if (success) {
+      setLoading(true);
 
-      navigate("/");
+      setError("");
 
-    } else {
+      try {
 
-      setError(
-        "Invalid email or password"
-      );
+        const response =
+          await fetch(
 
-    }
+"http://localhost:8000/api/auth/login",
 
-  };
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+              },
+
+              body: JSON.stringify({
+
+                email,
+                password,
+
+              }),
+
+            }
+
+          );
+
+        const data =
+          await response.json();
+
+        // Backend Error
+        if (!response.ok) {
+
+          setError(
+            data.message
+          );
+
+          setLoading(false);
+
+          return;
+
+        }
+
+        // Save Token
+          login(
+            data.user,
+            data.token
+          );
+
+
+
+        // Navigate Home
+        navigate("/");
+
+      } catch (error) {
+
+        console.log(error);
+
+        setError(
+          "Something went wrong"
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
 
   return (
 
@@ -60,7 +119,9 @@ function Login() {
     >
 
       <form
-        onSubmit={handleSubmit}
+
+        onSubmit={handleLogin}
+
         className="
           bg-white
           shadow-sm
@@ -82,19 +143,43 @@ function Login() {
             text-center
           "
         >
-          Login
+          Welcome Back
         </h1>
 
         <div className="space-y-5">
 
+          {/* Error */}
+          {
+            error && (
+
+              <p
+                className="
+                  text-red-500
+                  text-sm
+                  text-center
+                "
+              >
+                {error}
+              </p>
+
+            )
+          }
+
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
+
             value={email}
+
             onChange={(e) =>
-              setEmail(e.target.value)
+              setEmail(
+                e.target.value
+              )
             }
+
             required
+
             className="
               w-full
               border
@@ -107,14 +192,21 @@ function Login() {
             "
           />
 
+          {/* Password */}
           <input
             type="password"
             placeholder="Password"
+
             value={password}
+
             onChange={(e) =>
-              setPassword(e.target.value)
+              setPassword(
+                e.target.value
+              )
             }
+
             required
+
             className="
               w-full
               border
@@ -127,16 +219,12 @@ function Login() {
             "
           />
 
-          {error && (
-
-            <p className="text-red-500 text-sm">
-              {error}
-            </p>
-
-          )}
-
+          {/* Button */}
           <button
             type="submit"
+
+            disabled={loading}
+
             className="
               w-full
               bg-indigo-600
@@ -148,11 +236,18 @@ function Login() {
               transition
             "
           >
-            Login
+
+            {
+              loading
+                ? "Logging In..."
+                : "Login"
+            }
+
           </button>
 
         </div>
 
+        {/* Signup Link */}
         <p
           className="
             text-center
@@ -161,10 +256,12 @@ function Login() {
             mt-6
           "
         >
+
           Don’t have an account?
 
           <Link
             to="/signup"
+
             className="
               text-indigo-600
               font-semibold
@@ -181,6 +278,7 @@ function Login() {
     </div>
 
   );
+
 }
 
 export default Login;
