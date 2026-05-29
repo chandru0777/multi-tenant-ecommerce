@@ -8,6 +8,8 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Checkout from "../pages/Checkout";
 import SearchResults from "../pages/SearchResults";
+import MyOrders from "../pages/MyOrders";
+
 
 function AppRoutes() {
   return (
@@ -40,6 +42,10 @@ function AppRoutes() {
         <Route
           path="/checkout"
           element={<Checkout />}
+        />
+        <Route
+            path="/my-orders"
+            element={<MyOrders />}
         />
 
       </Routes>

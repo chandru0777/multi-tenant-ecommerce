@@ -116,8 +116,87 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+const placeBuyNowOrder =
+  async (req, res) => {
+
+    try {
+
+      const {
+
+        userId,
+
+        productId,
+
+        quantity,
+
+      } = req.body;
+
+      const Product =
+        require("../models/Product");
+
+      const product =
+        await Product.findById(
+          productId
+        );
+
+      if (!product) {
+
+        return res.status(404).json({
+          message:
+            "Product not found",
+        });
+
+      }
+
+      const order =
+        await Order.create({
+
+          user: userId,
+
+          items: [
+
+            {
+
+              product:
+                productId,
+
+              quantity,
+
+            },
+
+          ],
+
+          totalPrice:
+            product.price *
+            quantity,
+
+        });
+
+      res.status(201).json({
+
+        message:
+          "Buy Now order placed",
+
+        order,
+
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+
+        message:
+          error.message,
+
+      });
+
+    }
+
+};
+
 module.exports = {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
+  placeBuyNowOrder
 };

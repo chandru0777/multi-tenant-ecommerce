@@ -6,6 +6,7 @@ const {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
+  placeBuyNowOrder
 } = require("../controllers/orderController");
 
 // Place order
@@ -16,5 +17,11 @@ router.get("/:userId", getUserOrders);
 
 // Update order status
 router.put("/:id", updateOrderStatus);
+
+
+router.post(
+  "/buy-now",
+  placeBuyNowOrder
+);
 
 module.exports = router;

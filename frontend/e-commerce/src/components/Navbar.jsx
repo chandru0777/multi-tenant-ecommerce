@@ -10,8 +10,9 @@ function Navbar() {
 
   const {  user,  logout} = useAuth();
 
-  const [search, setSearch] =
-  useState("");
+  const [search, setSearch] =useState("");
+
+  const [showMenu, setShowMenu] =useState(false);
 
   const navigate = useNavigate();
 
@@ -119,80 +120,111 @@ const cartCount =
           {
                   user ? (
 
-                    <div
-                      className="
-                        flex
-                        items-center
-                        gap-3
-                      "
-                    >
+                    <div className="relative">
 
-                      {/* User Icon */}
-                      <div
-                        className="
-                          w-10
-                          h-10
-                          rounded-full
-                          bg-indigo-100
-                          text-indigo-700
-                          flex
-                          items-center
-                          justify-center
-                          font-bold
-                          text-sm
-                        "
-                      >
-                        {
-                          user.name[0]
-                            .toUpperCase()
-                        }
-                      </div>
+                          <button
 
-                      {/* Name */}
-                      <div
-                        className="
-                          hidden
-                          md:block
-                        "
-                      >
+                            onClick={() =>
+                              setShowMenu(
+                                !showMenu
+                              )
+                            }
 
-                        <p
-                          className="
-                            text-sm
-                            font-bold
-                            text-gray-800
-                          "
-                        >
-                          {user.name}
-                        </p>
+                            className="
+                              flex
+                              items-center
+                              gap-3
+                            "
+                          >
 
-                        <p
-                          className="
-                            text-xs
-                            text-gray-400
-                          "
-                        >
-                          {user.role}
-                        </p>
+                            <div
+                              className="
+                                w-10
+                                h-10
+                                rounded-full
+                                bg-indigo-100
+                                text-indigo-700
+                                flex
+                                items-center
+                                justify-center
+                                font-bold
+                              "
+                            >
+                              {user.name[0].toUpperCase()}
+                            </div>
 
-                      </div>
+                            <span
+                              className="
+                                hidden
+                                md:block
+                                font-semibold
+                              "
+                            >
+                              {user.name}
+                            </span>
 
-                      {/* Logout */}
-                      <button
+                          </button>
 
-                        onClick={logout}
+                          {
+                            showMenu && (
 
-                        className="
-                          text-sm
-                          font-semibold
-                          text-red-500
-                          hover:text-red-600
-                        "
-                      >
-                        Logout
-                      </button>
+                              <div
+                                className="
+                                  absolute
+                                  right-0
+                                  mt-3
+                                  w-48
+                                  bg-white
+                                  border
+                                  rounded-2xl
+                                  shadow-lg
+                                  z-50
+                                  overflow-hidden
+                                "
+                              >
 
-                    </div>
+                                <Link
+
+                                  to="/my-orders"
+
+                                  className="
+                                    block
+                                    px-5
+                                    py-3
+                                    hover:bg-gray-50
+                                  "
+                                >
+                                  My Orders
+                                </Link>
+
+                                <button
+
+                                  onClick={() => {
+
+                                    logout();
+
+                                    setShowMenu(false);
+
+                                  }}
+
+                                  className="
+                                    w-full
+                                    text-left
+                                    px-5
+                                    py-3
+                                    text-red-500
+                                    hover:bg-red-50
+                                  "
+                                >
+                                  Logout
+                                </button>
+
+                              </div>
+
+                            )
+                          }
+
+                        </div>
 
                   ) : (
 
@@ -208,6 +240,7 @@ const cartCount =
                     >
                       Login
                     </Link>
+                    
 
                   )
                 }
