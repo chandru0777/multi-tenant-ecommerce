@@ -1,19 +1,26 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { useLocation } from "react-router-dom";
-
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-
-import { CartContext } from "../context/CartContext";
+import { useCart }from "../context/CartContext";
 
 function Checkout() {
+  const { cartItems,fetchCart} = useCart();
 
-  const { cartItems } = useContext(CartContext);
+  const { user, token } = useAuth();
+
+  const navigate = useNavigate();
+  
+
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const location = useLocation();
 
   // Buy Now Product
-  const buyNowProduct =
-    location.state?.buyNowProduct;
+  const buyNowProduct = location.state?.buyNowProduct;
+
+  const isBuyNow = !!buyNowProduct;
 
   // Final Checkout Items
   const checkoutItems = buyNowProduct
@@ -24,15 +31,112 @@ function Checkout() {
     useState("upi");
 
   // Total Price
-  const totalPrice = checkoutItems.reduce(
+const totalPrice =
+        checkoutItems.reduce(
+          (total, item) => {
 
-    (total, item) =>
+            const price =
+              item.product
+                ? item.product.price
+                : item.price;
 
-      total + item.price * item.quantity,
+            return (
+              total +
+              price *
+              (item.quantity || 1)
+            );
 
-    0
+          },
+          0
+        );
+        
+        
+const handlePlaceOrder = async () => {
 
-  );
+  try {
+
+    setPlacingOrder(true);
+
+    let response;
+
+    if (isBuyNow) {
+
+      response = await fetch(
+        "http://localhost:8000/api/order/buy-now",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            userId: user._id,
+            productId: buyNowProduct._id,
+            quantity: 1,
+          }),
+        }
+      );
+
+    } else {
+
+      response = await fetch(
+
+          "http://localhost:8000/api/order",
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+                Authorization:
+          `Bearer ${token}`,
+
+              },
+
+            }
+
+          );
+
+    }
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+
+      alert(data.message);
+
+      return;
+
+    }
+
+    alert(
+      "Order placed successfully"
+    );
+
+    await fetchCart();
+
+    navigate("/my-orders");
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+      "Something went wrong"
+    );
+
+  } finally {
+
+    setPlacingOrder(false);
+
+  }
+
+};
 
   return (
 
@@ -347,47 +451,70 @@ function Checkout() {
               {/* Products */}
               <div className="space-y-5">
 
-                {checkoutItems.map((item) => (
+               {checkoutItems.map((item) => {
 
-                  <div
-                    key={item.id}
-                    className="
-                      flex
-                      items-center
-                      gap-4
-                    "
-                  >
+                  const product =
+                    item.product || item;
 
-                    <img
-                      src={item.image}
-                      alt={item.name}
+                  return (
+
+                    <div
+                      key={item._id}
                       className="
-                        w-20
-                        h-20
-                        object-cover
-                        rounded-2xl
+                        flex
+                        items-center
+                        gap-4
                       "
-                    />
+                    >
 
-                    <div className="flex-1">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="
+                          w-20
+                          h-20
+                          object-cover
+                          rounded-2xl
+                        "
+                      />
 
-                      <h3 className="font-bold text-gray-800">
-                        {item.name}
-                      </h3>
+                      <div className="flex-1">
 
-                      <p className="text-sm text-gray-500">
-                        Qty: {item.quantity}
-                      </p>
+                        <h3
+                          className="
+                            font-bold
+                            text-gray-800
+                          "
+                        >
+                          {product.name}
+                        </h3>
+
+                        <p
+                          className="
+                            text-sm
+                            text-gray-500
+                          "
+                        >
+                          Qty:
+                          {item.quantity || 1}
+                        </p>
+
+                      </div>
+
+                      <span className="font-bold">
+
+                        ₹ {
+                          product.price *
+                          (item.quantity || 1)
+                        }
+
+                      </span>
 
                     </div>
 
-                    <span className="font-bold">
-                      ₹ {item.price * item.quantity}
-                    </span>
+                  );
 
-                  </div>
-
-                ))}
+                })}
 
               </div>
 
@@ -431,21 +558,32 @@ function Checkout() {
 
                 </div>
 
-                <button
-                  className="
-                    w-full
-                    mt-6
-                    bg-indigo-600
-                    hover:bg-indigo-700
-                    text-white
-                    py-4
-                    rounded-2xl
-                    font-bold
-                    transition
-                  "
-                >
-                  Place Order
-                </button>
+               <button
+
+                onClick={handlePlaceOrder}
+
+                disabled={placingOrder}
+
+                className="
+                  w-full
+                  mt-6
+                  bg-indigo-600
+                  hover:bg-indigo-700
+                  text-white
+                  py-4
+                  rounded-2xl
+                  font-bold
+                  transition
+                "
+              >
+
+                {
+                  placingOrder
+                    ? "Placing Order..."
+                    : "Place Order"
+                }
+
+              </button>
 
               </div>
 

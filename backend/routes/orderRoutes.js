@@ -1,4 +1,5 @@
 const express = require("express");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -6,15 +7,25 @@ const {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
+  placeBuyNowOrder
 } = require("../controllers/orderController");
 
-// Place order
-router.post("/", placeOrder);
+router.post(
+  "/",
+  protect,
+  placeOrder
+);
 
-// Get orders of a user
-router.get("/:userId", getUserOrders);
+router.get(
+  "/my-orders",
+  protect,
+  getUserOrders
+);
 
-// Update order status
-router.put("/:id", updateOrderStatus);
+router.put(
+  "/:id",
+  protect,
+  updateOrderStatus
+);
 
 module.exports = router;

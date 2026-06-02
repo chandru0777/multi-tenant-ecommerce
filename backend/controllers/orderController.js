@@ -6,7 +6,7 @@ const User = require("../models/User");
 // Place Order
 const placeOrder = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId =req.user._id;
 
     // get cart items
     const cartItems = await Cart.find({ user: userId }).populate("product");
@@ -70,7 +70,7 @@ const placeOrder = async (req, res) => {
 // Get User Orders
 const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.params;
+   const userId = req.user._id;
 
     const orders = await Order.find({ user: userId })
       .populate("items.product")
@@ -116,8 +116,87 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+const placeBuyNowOrder =
+  async (req, res) => {
+
+    try {
+
+      const {
+
+        userId,
+
+        productId,
+
+        quantity,
+
+      } = req.body;
+
+      const Product =
+        require("../models/Product");
+
+      const product =
+        await Product.findById(
+          productId
+        );
+
+      if (!product) {
+
+        return res.status(404).json({
+          message:
+            "Product not found",
+        });
+
+      }
+
+      const order =
+        await Order.create({
+
+          user: userId,
+
+          items: [
+
+            {
+
+              product:
+                productId,
+
+              quantity,
+
+            },
+
+          ],
+
+          totalPrice:
+            product.price *
+            quantity,
+
+        });
+
+      res.status(201).json({
+
+        message:
+          "Buy Now order placed",
+
+        order,
+
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+
+        message:
+          error.message,
+
+      });
+
+    }
+
+};
+
 module.exports = {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
+  placeBuyNowOrder
 };
