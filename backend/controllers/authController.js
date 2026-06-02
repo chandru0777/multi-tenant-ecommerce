@@ -51,11 +51,14 @@ const registerUser = async (req, res) => {
 
 // LOGIN USER
 const loginUser = async (req, res) => {
+
+   console.log("LOGIN API HIT");
   try {
     const { email, password } = req.body;
 
     // find user
     const user = await User.findOne({ email });
+   
 
     if (!user) {
       return res.status(400).json({
@@ -84,6 +87,7 @@ const loginUser = async (req, res) => {
       message: error.message,
     });
   }
+
 };
 
 module.exports = {

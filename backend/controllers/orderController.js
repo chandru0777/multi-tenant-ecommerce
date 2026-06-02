@@ -6,7 +6,7 @@ const User = require("../models/User");
 // Place Order
 const placeOrder = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId =req.user._id;
 
     // get cart items
     const cartItems = await Cart.find({ user: userId }).populate("product");
@@ -70,7 +70,7 @@ const placeOrder = async (req, res) => {
 // Get User Orders
 const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.params;
+   const userId = req.user._id;
 
     const orders = await Order.find({ user: userId })
       .populate("items.product")

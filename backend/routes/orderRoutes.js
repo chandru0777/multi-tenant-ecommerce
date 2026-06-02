@@ -1,4 +1,5 @@
 const express = require("express");
+const protect = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -9,19 +10,22 @@ const {
   placeBuyNowOrder
 } = require("../controllers/orderController");
 
-// Place order
-router.post("/", placeOrder);
-
-// Get orders of a user
-router.get("/:userId", getUserOrders);
-
-// Update order status
-router.put("/:id", updateOrderStatus);
-
-
 router.post(
-  "/buy-now",
-  placeBuyNowOrder
+  "/",
+  protect,
+  placeOrder
+);
+
+router.get(
+  "/my-orders",
+  protect,
+  getUserOrders
+);
+
+router.put(
+  "/:id",
+  protect,
+  updateOrderStatus
 );
 
 module.exports = router;

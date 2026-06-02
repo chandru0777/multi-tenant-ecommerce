@@ -9,6 +9,8 @@ import Signup from "../pages/Signup";
 import Checkout from "../pages/Checkout";
 import SearchResults from "../pages/SearchResults";
 import MyOrders from "../pages/MyOrders";
+import VendorDashboard from "../pages/VendorDashboard";
+
 
 
 function AppRoutes() {
@@ -47,6 +49,12 @@ function AppRoutes() {
             path="/my-orders"
             element={<MyOrders />}
         />
+        <Route
+            path="/vendor"
+            element={
+              <VendorDashboard />
+            }
+          />
 
       </Routes>
     </BrowserRouter>

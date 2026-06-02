@@ -80,18 +80,26 @@ const handlePlaceOrder = async () => {
     } else {
 
       response = await fetch(
-        "http://localhost:8000/api/order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            userId: user._id,
-          }),
-        }
-      );
+
+          "http://localhost:8000/api/order",
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "application/json",
+
+                Authorization:
+          `Bearer ${token}`,
+
+              },
+
+            }
+
+          );
 
     }
 

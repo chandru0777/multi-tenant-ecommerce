@@ -197,6 +197,24 @@ const cartCount =
                                   My Orders
                                 </Link>
 
+                                 {
+                                user?.role === "vendor" && (
+
+                                  <Link
+                                    to="/vendor"
+                                    className="
+                                      block
+                                      px-5
+                                      py-3
+                                      hover:bg-gray-50
+                                    "
+                                  >
+                                    Vendor Dashboard
+                                  </Link>
+
+                                )
+                              }
+
                                 <button
 
                                   onClick={() => {
@@ -218,6 +236,7 @@ const cartCount =
                                 >
                                   Logout
                                 </button>
+                               
 
                               </div>
 
@@ -244,6 +263,8 @@ const cartCount =
 
                   )
                 }
+
+               <p>{user?.role}</p> 
 
           {/* Signup */}
           <Link
