@@ -9,7 +9,8 @@ const {
   deleteProduct,
   getProductsByCategory,
   getSingleProduct,
-  searchProducts
+  searchProducts,
+   getVendorProducts
 } = require("../controllers/productController");
 
 const protect = require("../middleware/authMiddleware");
@@ -18,6 +19,21 @@ const authorizeRoles = require("../middleware/roleMiddleware");
 
 // Public route
 router.get("/", getProducts);
+
+router.get(
+
+  "/vendor/my-products",
+
+  protect,
+
+  authorizeRoles(
+    "vendor",
+    "admin"
+  ),
+
+  getVendorProducts
+
+);
 
 router.get(
   "/category/:category",
@@ -41,6 +57,16 @@ router.post(
   authorizeRoles("admin", "vendor"),
   //upload.single("image"), // ✅ IMPORTANT
   createProduct
+);
+//vendor prooducts 
+
+
+
+
+
+router.get(
+  "/:id",
+  getSingleProduct
 );
 
 router.put("/:id", protect, authorizeRoles("admin", "vendor"), updateProduct);

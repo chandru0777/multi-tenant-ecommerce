@@ -19,7 +19,7 @@ const createProduct = async (req, res) => {
       price: req.body.price,
       category: req.body.category,
       stock: req.body.stock,
-      image: req.file ? req.file.path : "", // ✅ FIXED (Cloudinary URL)
+      image: req.body.image, // ✅ FIXED (Cloudinary URL)
       store: store._id,
     });
 
@@ -223,6 +223,55 @@ const deleteProduct = async (req, res) => {
     }
 
 };
+//unique vendors
+const getVendorProducts =
+async (req, res) => {
+
+  try {
+
+    const store =
+      await Store.findOne({
+
+        owner:
+          req.user._id,
+
+      });
+
+    if (!store) {
+
+      return res.status(404).json({
+
+        message:
+          "Store not found",
+
+      });
+
+    }
+
+    const products =
+      await Product.find({
+
+        store:
+          store._id,
+
+      });
+
+    res.status(200).json(
+      products
+    );
+
+  } catch (error) {
+
+    res.status(500).json({
+
+      message:
+        error.message,
+
+    });
+
+  }
+
+};
 
 module.exports = {
   createProduct,
@@ -231,5 +280,6 @@ module.exports = {
   deleteProduct,
   getProductsByCategory,
   getSingleProduct,
-  searchProducts
+  searchProducts,
+   getVendorProducts
 };
