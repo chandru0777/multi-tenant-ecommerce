@@ -215,6 +215,9 @@ const cartCount =
                                 )
                               }
 
+                               <p className=" px-5 py-2">{user?.role}</p> 
+
+
                                 <button
 
                                   onClick={() => {
@@ -264,8 +267,7 @@ const cartCount =
                   )
                 }
 
-               <p>{user?.role}</p> 
-
+              
           {/* Signup */}
           <Link
             to="/signup"

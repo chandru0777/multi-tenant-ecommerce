@@ -10,6 +10,9 @@ import Checkout from "../pages/Checkout";
 import SearchResults from "../pages/SearchResults";
 import MyOrders from "../pages/MyOrders";
 import VendorDashboard from "../pages/VendorDashboard";
+import VendorProducts from "../pages/VendorProducts";
+import AddProduct from "../pages/AddProduct";
+import EditProduct from "../pages/EditProduct";
 
 
 
@@ -55,6 +58,30 @@ function AppRoutes() {
               <VendorDashboard />
             }
           />
+
+          <Route
+            path="/vendor/products"
+            element={
+              <VendorProducts/>
+            }
+            />
+
+             <Route
+
+              path="/vendor/add-product"
+
+              element={
+                <AddProduct/>
+              }
+
+              />
+              <Route
+
+              path="/vendor/edit-product/:id"
+              element={
+                <EditProduct/>
+              }
+              />
 
       </Routes>
     </BrowserRouter>

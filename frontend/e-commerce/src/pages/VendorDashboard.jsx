@@ -1,5 +1,5 @@
-import MainLayout
-from "../layouts/MainLayout";
+import MainLayout from "../layouts/MainLayout";
+import { Link } from "react-router-dom";
 
 function VendorDashboard() {
 
@@ -17,6 +17,35 @@ function VendorDashboard() {
         >
           Vendor Dashboard
         </h1>
+
+         <Link
+            to="/vendor/add-product"
+            className="
+                inline-block
+                mt-6
+                bg-indigo-600
+                text-white
+                px-5
+                py-3
+                rounded-xl
+            "
+            >
+            Add Product
+            </Link>
+
+            <Link
+                to="/vendor/products"
+                className="
+                    bg-indigo-600
+                    text-white
+                    px-5
+                    py-3
+                    rounded-2xl
+                    inline-block
+                "
+                >
+                Manage Products
+                </Link>
 
         <div
           className="
