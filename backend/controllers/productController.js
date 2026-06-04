@@ -272,6 +272,68 @@ async (req, res) => {
   }
 
 };
+//Order tracking
+
+
+const placeBuyNowOrder = async (req, res) => {
+
+  try {
+
+    const userId = req.user._id;
+
+    const {
+      productId,
+      quantity
+    } = req.body;
+
+    const product =
+      await Product.findById(productId);
+
+    if (!product) {
+
+      return res.status(404).json({
+        message: "Product not found"
+      });
+
+    }
+
+    const order =
+      await Order.create({
+
+        user: userId,
+
+        items: [
+          {
+            product: productId,
+            quantity
+          }
+        ],
+
+        totalPrice:
+          product.price * quantity
+
+      });
+
+    res.status(201).json({
+
+      message:
+        "Order placed successfully",
+
+      order
+
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+
+};
 
 module.exports = {
   createProduct,
@@ -281,5 +343,6 @@ module.exports = {
   getProductsByCategory,
   getSingleProduct,
   searchProducts,
-   getVendorProducts
+   getVendorProducts,
+   placeBuyNowOrder 
 };

@@ -278,10 +278,14 @@ const cartCount =
           </Link>
 
           {/* Become a Seller */}
-          <button className="relative overflow-hidden text-sm font-semibold text-white px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group">
+         {
+          user?.role==="vendor" && (
+                    <Link to="/vendor" className="relative overflow-hidden text-sm font-semibold text-white px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group">
             <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <span className="relative z-10">✦ Become a Seller</span>
-          </button>
+          </Link>
+          )
+         }
 
           {/* Cart */}
           <Link

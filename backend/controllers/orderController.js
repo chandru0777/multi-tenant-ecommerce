@@ -1,6 +1,8 @@
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const User = require("../models/User");
+const Store = require("../models/Store");
+const Product = require("../models/Product");
 //const sendEmail = require("../config/mail");
 
 // Place Order
@@ -194,9 +196,70 @@ const placeBuyNowOrder =
 
 };
 
+//vendoe Orders 
+
+const getVendorOrders = async (req, res) => {
+
+  try {
+
+    const store =
+      await Store.findOne({
+        owner: req.user._id,
+      });
+
+    if (!store) {
+
+      return res.status(404).json({
+        message: "Store not found",
+      });
+
+    }
+
+    const products =
+      await Product.find({
+        store: store._id,
+      });
+
+    const productIds =
+      products.map(
+        (product) =>
+          product._id
+      );
+
+    const orders =
+      await Order.find({
+        "items.product": {
+          $in: productIds,
+        },
+      })
+      .populate("user", "name email")
+      .populate(
+        "items.product"
+      )
+      .sort({
+        createdAt: -1,
+      });
+
+    res.status(200).json(
+      orders
+    );
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+
+};
+
 module.exports = {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
-  placeBuyNowOrder
+  placeBuyNowOrder,
+  getVendorOrders
 };

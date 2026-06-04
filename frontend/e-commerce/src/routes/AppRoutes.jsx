@@ -13,6 +13,7 @@ import VendorDashboard from "../pages/VendorDashboard";
 import VendorProducts from "../pages/VendorProducts";
 import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
+import VendorOrders from "../pages/VendorOrders";
 
 
 
@@ -82,6 +83,12 @@ function AppRoutes() {
                 <EditProduct/>
               }
               />
+              <Route
+              path="/vendor/orders"
+              element={
+                <VendorOrders />
+              }
+            />
 
       </Routes>
     </BrowserRouter>
