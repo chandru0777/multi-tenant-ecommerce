@@ -15,6 +15,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 //const paymentRoutes = require("./routes/paymentRoutes");
 const storeRoutes = require("./routes/storeRoutes"); 
+const adminRoutes = require("./routes/adminRoutes");
 //const analyticsRoutes = require("./routes/analyticsRoutes");
 
 connectDB();
@@ -33,6 +34,7 @@ app.use(
 app.use(express.json());
 
 // API ROUTES
+app.use("/api/admin",  adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);

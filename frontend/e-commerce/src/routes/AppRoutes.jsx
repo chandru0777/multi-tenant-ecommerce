@@ -14,6 +14,7 @@ import VendorProducts from "../pages/VendorProducts";
 import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
 import VendorOrders from "../pages/VendorOrders";
+import AdminUsers from "../pages/AdminUsers";
 
 
 
@@ -89,6 +90,10 @@ function AppRoutes() {
                 <VendorOrders />
               }
             />
+            <Route
+            path="/admin/users"
+            element={<AdminUsers />}
+          />
 
       </Routes>
     </BrowserRouter>
