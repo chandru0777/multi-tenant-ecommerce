@@ -10,7 +10,10 @@ require("../middleware/roleMiddleware");
 
 const {
   getAllUsers,
-  updateUserRole
+  updateUserRole,
+  getAllProducts,
+  deleteProductByAdmin,
+  getAllOrders
 } = require("../controllers/adminController");
 
 router.get(
@@ -25,6 +28,27 @@ router.put(
   protect,
   authorizeRoles("admin"),
   updateUserRole
+);
+
+router.get(
+  "/products",
+  protect,
+  authorizeRoles("admin"),
+  getAllProducts
+);
+
+router.delete(
+  "/products/:id",
+  protect,
+  authorizeRoles("admin"),
+  deleteProductByAdmin
+);
+
+router.get(
+  "/orders",
+  protect,
+  authorizeRoles("admin"),
+  getAllOrders
 );
 
 module.exports = router;

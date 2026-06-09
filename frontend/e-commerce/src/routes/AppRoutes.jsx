@@ -15,7 +15,8 @@ import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
 import VendorOrders from "../pages/VendorOrders";
 import AdminUsers from "../pages/AdminUsers";
-
+import AdminProducts from "../pages/AdminProducts";
+import AdminOrders from "../pages/AdminOrders";
 
 
 function AppRoutes() {
@@ -93,6 +94,16 @@ function AppRoutes() {
             <Route
             path="/admin/users"
             element={<AdminUsers />}
+          />
+
+          <Route
+            path="/admin/products"
+            element={<AdminProducts />}
+          />
+
+          <Route
+          path ="/admin/orders"
+          element={<AdminOrders/>}
           />
 
       </Routes>
