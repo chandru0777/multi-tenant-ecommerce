@@ -192,10 +192,65 @@ async (req, res) => {
 
 };
 
+const getDashboardStats =
+async (req, res) => {
+
+  try {
+
+    const totalUsers =
+      await User.countDocuments();
+
+    const totalVendors =
+      await User.countDocuments({
+        role: "vendor",
+      });
+
+    const totalProducts =
+      await Product.countDocuments();
+
+    const totalOrders =
+      await Order.countDocuments();
+
+    const revenueData =
+      await Order.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalRevenue: {
+              $sum: "$totalPrice",
+            },
+          },
+        },
+      ]);
+
+    const totalRevenue =
+      revenueData[0]?.totalRevenue || 0;
+
+    res.status(200).json({
+      totalUsers,
+      totalVendors,
+      totalProducts,
+      totalOrders,
+      totalRevenue,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+
+  }
+
+};
+
 module.exports = {
   getAllUsers,
   updateUserRole,
   getAllProducts,
   deleteProductByAdmin,
-  getAllOrders
+  getAllOrders,
+  getDashboardStats
 };

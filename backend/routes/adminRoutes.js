@@ -13,7 +13,8 @@ const {
   updateUserRole,
   getAllProducts,
   deleteProductByAdmin,
-  getAllOrders
+  getAllOrders,
+  getDashboardStats
 } = require("../controllers/adminController");
 
 router.get(
@@ -49,6 +50,12 @@ router.get(
   protect,
   authorizeRoles("admin"),
   getAllOrders
+);
+router.get(
+  "/dashboard-stats",
+  protect,
+  authorizeRoles("admin"),
+  getDashboardStats
 );
 
 module.exports = router;

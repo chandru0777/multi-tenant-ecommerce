@@ -17,6 +17,7 @@ import VendorOrders from "../pages/VendorOrders";
 import AdminUsers from "../pages/AdminUsers";
 import AdminProducts from "../pages/AdminProducts";
 import AdminOrders from "../pages/AdminOrders";
+import AdminDashboard from "../pages/AdminDashboard";
 
 
 function AppRoutes() {
@@ -104,6 +105,11 @@ function AppRoutes() {
           <Route
           path ="/admin/orders"
           element={<AdminOrders/>}
+          />
+
+          <Route
+            path="/admin"
+            element={<AdminDashboard />}
           />
 
       </Routes>

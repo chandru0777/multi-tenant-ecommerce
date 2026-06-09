@@ -87,7 +87,27 @@ function Login() {
 
 
         // Navigate Home
-        navigate("/");
+              if (
+          data.user.role === "admin"
+        ) {
+
+          navigate("/admin");
+
+        }
+
+        else if (
+          data.user.role === "vendor"
+        ) {
+
+          navigate("/vendor");
+
+        }
+
+        else {
+
+          navigate("/");
+
+        }
 
       } catch (error) {
 
