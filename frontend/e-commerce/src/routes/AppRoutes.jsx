@@ -18,6 +18,8 @@ import AdminUsers from "../pages/AdminUsers";
 import AdminProducts from "../pages/AdminProducts";
 import AdminOrders from "../pages/AdminOrders";
 import AdminDashboard from "../pages/AdminDashboard";
+import CreateStore from "../pages/CreateStore";
+import MyStore from "../pages/MyStore";
 
 
 function AppRoutes() {
@@ -110,6 +112,16 @@ function AppRoutes() {
           <Route
             path="/admin"
             element={<AdminDashboard />}
+          />
+
+          <Route
+            path="/vendor/create-store"
+            element={<CreateStore />}
+          />
+
+          <Route
+            path="/vendor/store"
+            element={<MyStore />}
           />
 
       </Routes>

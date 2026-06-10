@@ -19,7 +19,7 @@ const createProduct = async (req, res) => {
       price: req.body.price,
       category: req.body.category,
       stock: req.body.stock,
-      image: req.body.image, // ✅ FIXED (Cloudinary URL)
+      image: req.body.image, 
       store: store._id,
     });
 

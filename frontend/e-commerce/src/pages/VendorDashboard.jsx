@@ -1,5 +1,7 @@
 import MainLayout from "../layouts/MainLayout";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const STATS = [
   {
@@ -107,6 +109,50 @@ const RECENT_ORDERS = [
 ];
 
 function VendorDashboard() {
+
+  const navigate = useNavigate();
+  const { token } = useAuth();
+const checkStore = async () => {
+
+  try {
+
+    const response =
+      await fetch(
+        "http://localhost:8000/api/store/my-store",
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+    if (
+      response.status === 404
+    ) {
+
+      navigate(
+        "/vendor/create-store"
+      );
+
+    }
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+useEffect(() => {
+
+  if (token) {
+
+    checkStore();
+
+  }
+
+}, [token]);
   return (
     <MainLayout>
       <div className="mt-8 mb-16">
@@ -150,6 +196,16 @@ function VendorDashboard() {
               </svg>
               Manage Orders
             </Link>
+                  <Link
+              to="/vendor/store"
+              className="flex items-center gap-2 bg-white border border-gray-200 hover:border-emerald-300 text-gray-700 hover:text-emerald-600 text-sm font-semibold px-5 py-2.5 rounded-2xl hover:shadow-md transition-all duration-200"
+            >
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/>
+              </svg>
+              My Store
+            </Link>
+
           </div>
         </div>
 
