@@ -1,18 +1,41 @@
-const express = require("express");
-const router = express.Router();
+const express =
+require("express");
+
+const router =
+express.Router();
+
+const protect =
+require("../middleware/authMiddleware");
+
+const authorizeRoles =
+require("../middleware/roleMiddleware");
 
 const {
+
   createStore,
-  getMyStore,
-} = require("../controllers/storeController");
+  getMyStore
 
-const protect = require("../middleware/authMiddleware");
-const authorizeRoles = require("../middleware/roleMiddleware");
+} = require(
+  "../controllers/storeController"
+);
 
-// Vendor only
-router.post("/", protect, authorizeRoles("vendor"), createStore);
+router.post(
+  "/",
+  protect,
+  authorizeRoles(
+    "vendor"
+  ),
+  createStore
+);
 
-// Get own store
-router.get("/my", protect, authorizeRoles("vendor"), getMyStore);
+router.get(
+  "/my-store",
+  protect,
+  authorizeRoles(
+    "vendor"
+  ),
+  getMyStore
+);
 
-module.exports = router;
+module.exports =
+router;

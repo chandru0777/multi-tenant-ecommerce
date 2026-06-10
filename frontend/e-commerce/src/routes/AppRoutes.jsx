@@ -13,7 +13,13 @@ import VendorDashboard from "../pages/VendorDashboard";
 import VendorProducts from "../pages/VendorProducts";
 import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
-
+import VendorOrders from "../pages/VendorOrders";
+import AdminUsers from "../pages/AdminUsers";
+import AdminProducts from "../pages/AdminProducts";
+import AdminOrders from "../pages/AdminOrders";
+import AdminDashboard from "../pages/AdminDashboard";
+import CreateStore from "../pages/CreateStore";
+import MyStore from "../pages/MyStore";
 
 
 function AppRoutes() {
@@ -82,6 +88,41 @@ function AppRoutes() {
                 <EditProduct/>
               }
               />
+              <Route
+              path="/vendor/orders"
+              element={
+                <VendorOrders />
+              }
+            />
+            <Route
+            path="/admin/users"
+            element={<AdminUsers />}
+          />
+
+          <Route
+            path="/admin/products"
+            element={<AdminProducts />}
+          />
+
+          <Route
+          path ="/admin/orders"
+          element={<AdminOrders/>}
+          />
+
+          <Route
+            path="/admin"
+            element={<AdminDashboard />}
+          />
+
+          <Route
+            path="/vendor/create-store"
+            element={<CreateStore />}
+          />
+
+          <Route
+            path="/vendor/store"
+            element={<MyStore />}
+          />
 
       </Routes>
     </BrowserRouter>

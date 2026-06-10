@@ -49,12 +49,19 @@ const cartCount =
       <div className="flex items-center justify-between px-8 py-3.5 gap-6">
 
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-nowrap shrink-0"
-        >
-          ShopEase ✦
-        </Link>
+   <Link
+  to={
+        user?.role === "admin"
+          ? "/admin"
+          : user?.role === "vendor"
+          ? "/vendor"
+          : "/"
+      }  className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-nowrap shrink-0"
+
+
+    >
+      ShopEase ✦
+    </Link>
 
         {/* Search Bar */}
        <form
@@ -115,6 +122,14 @@ const cartCount =
 
         {/* Right Side */}
         <div className="flex items-center gap-5 shrink-0">
+          {user?.role=="admin" && (
+              <Link to="/admin" className="relative overflow-hidden text-sm font-semibold text-white px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group">
+            <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <span className="relative z-10">✦ Admin Dashboard</span>
+          </Link>
+
+          )}
+              
 
           {/* Login */}
           {
@@ -183,37 +198,111 @@ const cartCount =
                                 "
                               >
 
-                                <Link
+                             {user?.role === "customer" && (
+  <Link
+    to="/my-orders"
+    className="
+      block
+      px-5
+      py-3
+      hover:bg-gray-50
+    "
+  >
+    My Orders
+  </Link>
+)}
 
-                                  to="/my-orders"
+{user?.role === "vendor" && (
+  <>
+    <Link
+      to="/vendor"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Vendor Dashboard
+    </Link>
 
-                                  className="
-                                    block
-                                    px-5
-                                    py-3
-                                    hover:bg-gray-50
-                                  "
-                                >
-                                  My Orders
-                                </Link>
+    <Link
+      to="/vendor/products"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Manage Products
+    </Link>
 
-                                 {
-                                user?.role === "vendor" && (
+    <Link
+      to="/vendor/orders"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Manage Orders
+    </Link>
+  </>
+)}
 
-                                  <Link
-                                    to="/vendor"
-                                    className="
-                                      block
-                                      px-5
-                                      py-3
-                                      hover:bg-gray-50
-                                    "
-                                  >
-                                    Vendor Dashboard
-                                  </Link>
+{user?.role === "admin" && (
+  <>
+    <Link
+      to="/admin"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Admin Dashboard
+    </Link>
 
-                                )
-                              }
+    <Link
+      to="/admin/users"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Manage Users
+    </Link>
+
+    <Link
+      to="/admin/products"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Manage Products
+    </Link>
+
+    <Link
+      to="/admin/orders"
+      className="
+        block
+        px-5
+        py-3
+        hover:bg-gray-50
+      "
+    >
+      Manage Orders
+    </Link>
+  </>
+)}
 
                                <p className=" px-5 py-2">{user?.role}</p> 
 
@@ -225,6 +314,8 @@ const cartCount =
                                     logout();
 
                                     setShowMenu(false);
+
+                                    navigate("/");
 
                                   }}
 
@@ -269,22 +360,33 @@ const cartCount =
 
               
           {/* Signup */}
-          <Link
+
+          {!user && (
+         <Link
             to="/signup"
             className="relative text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors duration-200 group"
           >
             Signup
             <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 group-hover:w-full transition-all duration-300" />
           </Link>
+          )}
+          
 
           {/* Become a Seller */}
-          <button className="relative overflow-hidden text-sm font-semibold text-white px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group">
+         {
+          user?.role==="vendor" && (
+                    <Link to="/vendor" className="relative overflow-hidden text-sm font-semibold text-white px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 group">
             <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <span className="relative z-10">✦ Become a Seller</span>
-          </button>
+            <span className="relative z-10">✦ Vendor Dashboard</span>
+          </Link>
+          )
+         }
 
           {/* Cart */}
-          <Link
+
+          {user?.role !== "vendor" &&
+            user?.role !== "admin" && (
+                 <Link
             to="/cart"
             className="relative flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-600 px-4 py-2.5 rounded-xl transition-all duration-200"
           >
@@ -299,12 +401,17 @@ const cartCount =
             {cartCount}
             </span>
           </Link>
+              
+
+            )}
+         
 
         </div>
       </div>
 
       {/* Category Strip */}
-      <div className="border-t border-gray-100">
+      {user?.role === "customer" && (
+           <div className="border-t border-gray-100">
         <div className="flex items-center gap-1 px-8 py-1 overflow-x-auto">
 
           {/* Featured Deal */}
@@ -337,6 +444,8 @@ const cartCount =
           ))}
         </div>
       </div>
+      )}
+     
 
     </header>
   );

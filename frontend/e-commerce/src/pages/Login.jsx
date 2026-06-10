@@ -24,86 +24,109 @@ function Login() {
     useNavigate();
 
   // Login Function
-  const handleLogin =
-    async (e) => {
+ const handleLogin = async (e) => {
 
-      e.preventDefault();
+  e.preventDefault();
 
-      setLoading(true);
+  setLoading(true);
 
-      setError("");
+  setError("");
+
+  try {
+
+    const response = await fetch(
+      "http://localhost:8000/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+      setError(data.message);
+
+      return;
+
+    }
+
+    login(
+      data.user,
+      data.token
+    );
+
+    if (data.user.role === "admin") {
+
+      navigate("/admin");
+
+    }
+
+    else if (data.user.role === "vendor") {
 
       try {
 
-        const response =
+        const storeResponse =
           await fetch(
-
-"http://localhost:8000/api/auth/login",
-
+            "http://localhost:8000/api/store/my-store",
             {
-
-              method: "POST",
-
               headers: {
-
-                "Content-Type":
-                  "application/json",
-
+                Authorization:
+                  `Bearer ${data.token}`,
               },
-
-              body: JSON.stringify({
-
-                email,
-                password,
-
-              }),
-
             }
-
           );
 
-        const data =
-          await response.json();
+        if (storeResponse.ok) {
 
-        // Backend Error
-        if (!response.ok) {
+          navigate("/vendor");
 
-          setError(
-            data.message
+        } else {
+
+          navigate(
+            "/vendor/create-store"
           );
-
-          setLoading(false);
-
-          return;
 
         }
 
-        // Save Token
-          login(
-            data.user,
-            data.token
-          );
-
-
-
-        // Navigate Home
-        navigate("/");
-
       } catch (error) {
 
-        console.log(error);
-
-        setError(
-          "Something went wrong"
+        navigate(
+          "/vendor/create-store"
         );
-
-      } finally {
-
-        setLoading(false);
 
       }
 
-    };
+    }
+
+    else {
+
+      navigate("/");
+
+    }
+
+  } catch (error) {
+
+    console.log(error);
+
+    setError(
+      "Something went wrong"
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
 
   return (
 
