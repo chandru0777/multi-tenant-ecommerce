@@ -8,7 +8,17 @@ const Product = require("../models/Product");
 // Place Order
 const placeOrder = async (req, res) => {
   try {
-    const userId =req.user._id;
+    const userId = req.user._id;
+
+const {
+
+  customerName,
+
+  phone,
+
+  shippingAddress
+
+} = req.body;
 
     // get cart items
     const cartItems = await Cart.find({ user: userId }).populate("product");
@@ -35,11 +45,21 @@ const placeOrder = async (req, res) => {
     );
 
     // create order
-    const order = await Order.create({
-      user: userId,
-      items,
-      totalPrice,
-    });
+   const order = await Order.create({
+
+  user: userId,
+
+  items,
+
+  totalPrice,
+
+  customerName,
+
+  phone,
+
+  shippingAddress
+
+});
 
     // 🧠 GET USER DETAILS
     const user = await User.findById(userId);
@@ -125,14 +145,19 @@ const placeBuyNowOrder =
 
       const {
 
-        userId,
+  userId,
 
-        productId,
+  productId,
 
-        quantity,
+  quantity,
 
-      } = req.body;
+  customerName,
 
+  phone,
+
+  shippingAddress
+
+} = req.body;
       const Product =
         require("../models/Product");
 
@@ -151,28 +176,30 @@ const placeBuyNowOrder =
       }
 
       const order =
-        await Order.create({
+  await Order.create({
 
-          user: userId,
+    user: userId,
 
-          items: [
+    items: [
 
-            {
+      {
+        product: productId,
+        quantity,
+      },
 
-              product:
-                productId,
+    ],
 
-              quantity,
+    totalPrice:
+      product.price *
+      quantity,
 
-            },
+    customerName,
 
-          ],
+    phone,
 
-          totalPrice:
-            product.price *
-            quantity,
+    shippingAddress
 
-        });
+  });
 
       res.status(201).json({
 

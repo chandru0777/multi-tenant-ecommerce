@@ -11,6 +11,15 @@ function Checkout() {
   const { user, token } = useAuth();
 
   const navigate = useNavigate();
+
+  const [name, setName] =
+  useState("");
+
+const [phone, setPhone] =
+  useState("");
+
+const [address, setAddress] =
+  useState("");
   
 
   const [placingOrder, setPlacingOrder] = useState(false);
@@ -53,6 +62,20 @@ const totalPrice =
         
 const handlePlaceOrder = async () => {
 
+  if (
+  !name.trim() ||
+  !phone.trim() ||
+  !address.trim()
+) {
+
+  alert(
+    "Please fill all delivery details"
+  );
+
+  return;
+
+}
+
   try {
 
     setPlacingOrder(true);
@@ -77,6 +100,9 @@ const handlePlaceOrder = async () => {
           body: JSON.stringify({
             userId: user._id,
             productId: buyNowProduct._id,
+             customerName: name,
+          phone,
+         shippingAddress: address,
             quantity: 1,
           }),
         }
@@ -101,6 +127,12 @@ const handlePlaceOrder = async () => {
           `Bearer ${token}`,
 
               },
+              body: JSON.stringify({
+      userId: user._id,
+      customerName: name,
+      phone,
+      shippingAddress: address,
+    }),
 
             }
 
@@ -212,6 +244,11 @@ const handlePlaceOrder = async () => {
                   <input
                     type="text"
                     placeholder="Full Name"
+                    value={name}
+                        onChange={(e) =>
+                          setName(e.target.value)
+                        }
+
                     className="
                       w-full
                       border
@@ -227,6 +264,10 @@ const handlePlaceOrder = async () => {
                   <input
                     type="text"
                     placeholder="Phone Number"
+                    value={phone}
+                    onChange={(e) =>
+                      setPhone(e.target.value)
+                    }
                     className="
                       w-full
                       border
@@ -242,6 +283,10 @@ const handlePlaceOrder = async () => {
                   <textarea
                     rows="4"
                     placeholder="Full Address"
+                     value={address}
+                        onChange={(e) =>
+                          setAddress(e.target.value)
+                        }
                     className="
                       w-full
                       border
