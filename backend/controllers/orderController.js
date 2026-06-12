@@ -5,6 +5,88 @@ const Store = require("../models/Store");
 const Product = require("../models/Product");
 //const sendEmail = require("../config/mail");
 
+const getVendorDashboardStats =
+  async (req, res) => {
+
+    try {
+
+      const store =
+        await Store.findOne({
+          owner: req.user._id
+        });
+
+      if (!store) {
+
+        return res.status(404).json({
+          message: "Store not found"
+        });
+
+      }
+
+      const products =
+        await Product.find({
+          store: store._id
+        });
+
+      const productIds =
+        products.map(
+          (product) => product._id
+        );
+
+      const orders =
+        await Order.find({
+          "items.product": {
+            $in: productIds
+          }
+        });
+
+      const totalProducts =
+        products.length;
+
+      const totalOrders =
+        orders.length;
+
+      const totalRevenue =
+        orders.reduce(
+          (sum, order) =>
+            sum + order.totalPrice,
+          0
+        );
+
+      const uniqueCustomers =
+        new Set(
+          orders.map(
+            (order) =>
+              order.user.toString()
+          )
+        );
+
+      res.status(200).json({
+
+        totalProducts,
+
+        totalOrders,
+
+        totalRevenue,
+
+        totalCustomers:
+          uniqueCustomers.size
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          error.message
+      });
+
+    }
+
+};
+
 // Place Order
 const placeOrder = async (req, res) => {
   try {
@@ -283,10 +365,14 @@ const getVendorOrders = async (req, res) => {
 
 };
 
+//
+
+
 module.exports = {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
   placeBuyNowOrder,
-  getVendorOrders
+  getVendorOrders,
+  getVendorDashboardStats
 };

@@ -1,66 +1,9 @@
 import MainLayout from "../layouts/MainLayout";
 import { Link , useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const STATS = [
-  {
-    icon: (
-      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
-      </svg>
-    ),
-    label: "Total Products",
-    value: "24",
-    change: "+3 this week",
-    positive: true,
-    bg: "from-indigo-50 to-violet-50",
-    iconBg: "bg-indigo-100 text-indigo-600",
-    border: "border-indigo-100",
-  },
-  {
-    icon: (
-      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="m9 12 2 2 4-4"/>
-      </svg>
-    ),
-    label: "Total Orders",
-    value: "138",
-    change: "+12 today",
-    positive: true,
-    bg: "from-emerald-50 to-teal-50",
-    iconBg: "bg-emerald-100 text-emerald-600",
-    border: "border-emerald-100",
-  },
-  {
-    icon: (
-      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-      </svg>
-    ),
-    label: "Total Revenue",
-    value: "₹2,48,500",
-    change: "+₹14k this month",
-    positive: true,
-    bg: "from-amber-50 to-orange-50",
-    iconBg: "bg-amber-100 text-amber-600",
-    border: "border-amber-100",
-  },
-  {
-    icon: (
-      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-    ),
-    label: "Customers",
-    value: "892",
-    change: "+28 this week",
-    positive: true,
-    bg: "from-pink-50 to-rose-50",
-    iconBg: "bg-pink-100 text-pink-600",
-    border: "border-pink-100",
-  },
-];
+
 
 const QUICK_ACTIONS = [
   {
@@ -101,17 +44,88 @@ const QUICK_ACTIONS = [
   },
 ];
 
-const RECENT_ORDERS = [
-  { id: "#ORD-1041", product: "iPhone 15 Pro Max", customer: "Arjun M.",  amount: "₹1,34,999", status: "Delivered",  statusColor: "bg-green-100 text-green-700"  },
-  { id: "#ORD-1040", product: "Sony WH-1000XM5",   customer: "Priya S.",  amount: "₹24,999",   status: "Shipped",    statusColor: "bg-blue-100 text-blue-700"    },
-  { id: "#ORD-1039", product: "MacBook Air M3",     customer: "Rahul K.", amount: "₹1,14,900", status: "Processing", statusColor: "bg-amber-100 text-amber-700"  },
-  { id: "#ORD-1038", product: "Dyson Airwrap",      customer: "Sneha R.", amount: "₹45,900",   status: "Pending",    statusColor: "bg-gray-100 text-gray-600"    },
-];
+
 
 function VendorDashboard() {
 
   const navigate = useNavigate();
   const { token } = useAuth();
+
+  const [recentOrders,  setRecentOrders] =  useState([]);
+
+const [stats, setStats] = useState({
+
+    totalProducts: 0,
+
+    totalOrders: 0,
+
+    totalRevenue: 0,
+
+    totalCustomers: 0
+
+  });
+
+  const STATS = [
+  {
+    icon: (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+    ),
+    label: "Total Products",
+    value: stats.totalProducts,
+    change: "+3 this week",
+    positive: true,
+    bg: "from-indigo-50 to-violet-50",
+    iconBg: "bg-indigo-100 text-indigo-600",
+    border: "border-indigo-100",
+  },
+  {
+    icon: (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="m9 12 2 2 4-4"/>
+      </svg>
+    ),
+    label: "Total Orders",
+    value: stats.totalOrders,
+    change: "+12 today",
+    positive: true,
+    bg: "from-emerald-50 to-teal-50",
+    iconBg: "bg-emerald-100 text-emerald-600",
+    border: "border-emerald-100",
+  },
+  {
+    icon: (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      </svg>
+    ),
+    label: "Total Revenue",
+    value:
+  `₹${stats.totalRevenue.toLocaleString()}`,
+    change: "+₹14k this month",
+    positive: true,
+    bg: "from-amber-50 to-orange-50",
+    iconBg: "bg-amber-100 text-amber-600",
+    border: "border-amber-100",
+  },
+  {
+    icon: (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    ),
+    label: "Customers",
+    value: stats.totalCustomers,
+    change: "+28 this week",
+    positive: true,
+    bg: "from-pink-50 to-rose-50",
+    iconBg: "bg-pink-100 text-pink-600",
+    border: "border-pink-100",
+  },
+];
+
+
 const checkStore = async () => {
 
   try {
@@ -144,11 +158,75 @@ const checkStore = async () => {
   }
 
 };
+
+const fetchStats =
+  async () => {
+
+    try {
+
+      const response =
+        await fetch(
+          "http://localhost:8000/api/order/vendor-dashboard-stats",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
+
+      const data =
+        await response.json();
+
+      setStats(data);
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+};
+
+const fetchRecentOrders =
+  async () => {
+
+    try {
+
+      const response =
+        await fetch(
+          "http://localhost:8000/api/order/vendor-orders",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
+
+      const data =
+        await response.json();
+
+      setRecentOrders(
+        Array.isArray(data)
+          ? data.slice(0, 5)
+          : []
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+};
 useEffect(() => {
 
   if (token) {
 
     checkStore();
+    fetchStats();
+     fetchRecentOrders();
 
   }
 
@@ -283,19 +361,103 @@ useEffect(() => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {RECENT_ORDERS.map((o) => (
-                    <tr key={o.id} className="hover:bg-gray-50/60 transition-colors group">
-                      <td className="py-3.5 pr-4 font-mono text-xs font-bold text-indigo-500">{o.id}</td>
-                      <td className="py-3.5 pr-4 font-medium text-gray-800 max-w-[140px] truncate">{o.product}</td>
-                      <td className="py-3.5 pr-4 text-gray-500 hidden md:table-cell">{o.customer}</td>
-                      <td className="py-3.5 pr-4 font-bold text-gray-900">{o.amount}</td>
-                      <td className="py-3.5">
-                        <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${o.statusColor}`}>
-                          {o.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                  {recentOrders.map(
+                        (order) => (
+
+                          <tr
+                            key={order._id}
+                            className="
+                            hover:bg-gray-50/60
+                            transition-colors
+                            "
+                          >
+
+                            <td
+                              className="
+                              py-3.5
+                              pr-4
+                              font-mono
+                              text-xs
+                              font-bold
+                              text-indigo-500
+                              "
+                            >
+                              #
+                              {order._id.slice(-6)}
+                            </td>
+
+                            <td
+                              className="
+                              py-3.5
+                              pr-4
+                              font-medium
+                              text-gray-800
+                              "
+                            >
+                              {
+                                order.items?.[0]
+                                  ?.product?.name ||
+                                "Product"
+                              }
+                            </td>
+
+                            <td
+                              className="
+                              py-3.5
+                              pr-4
+                              text-gray-500
+                              hidden
+                              md:table-cell
+                              "
+                            >
+                              {
+                                order.customerName ||
+                                order.user?.name ||
+                                "Customer"
+                              }
+                            </td>
+
+                            <td
+                              className="
+                              py-3.5
+                              pr-4
+                              font-bold
+                              text-gray-900
+                              "
+                            >
+                              ₹
+                              {
+                                order.totalPrice
+                                  ?.toLocaleString()
+                              }
+                            </td>
+
+                            <td
+                              className="
+                              py-3.5
+                              "
+                            >
+
+                              <span
+                                className="
+                                text-[11px]
+                                font-bold
+                                px-2.5
+                                py-1
+                                rounded-full
+                                bg-indigo-100
+                                text-indigo-700
+                                "
+                              >
+                                {order.status}
+                              </span>
+
+                            </td>
+
+                          </tr>
+
+                        )
+                      )}
                 </tbody>
               </table>
             </div>
