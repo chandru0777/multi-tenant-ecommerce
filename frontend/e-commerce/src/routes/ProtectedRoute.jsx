@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-function VendorRoute({
+function ProtectedRoute({
   children
 }) {
 
@@ -19,21 +19,8 @@ function VendorRoute({
 
   }
 
-  if (
-    user.role !==
-    "vendor"
-  ) {
-
-    return (
-      <Navigate
-        to="/"
-      />
-    );
-
-  }
-
   return children;
 
 }
 
-export default VendorRoute;
+export default ProtectedRoute;
