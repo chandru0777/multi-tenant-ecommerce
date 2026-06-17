@@ -36,4 +36,4 @@ function VendorRoute({
 
 }
 
-export default VendorRoute;
+export default VendorRoute; 
