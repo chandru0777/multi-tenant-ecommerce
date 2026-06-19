@@ -5,10 +5,102 @@ const Store = require("../models/Store");
 const Product = require("../models/Product");
 //const sendEmail = require("../config/mail");
 
+const getVendorDashboardStats =
+  async (req, res) => {
+
+    try {
+
+      const store =
+        await Store.findOne({
+          owner: req.user._id
+        });
+
+      if (!store) {
+
+        return res.status(404).json({
+          message: "Store not found"
+        });
+
+      }
+
+      const products =
+        await Product.find({
+          store: store._id
+        });
+
+      const productIds =
+        products.map(
+          (product) => product._id
+        );
+
+      const orders =
+        await Order.find({
+          "items.product": {
+            $in: productIds
+          }
+        });
+
+      const totalProducts =
+        products.length;
+
+      const totalOrders =
+        orders.length;
+
+      const totalRevenue =
+        orders.reduce(
+          (sum, order) =>
+            sum + order.totalPrice,
+          0
+        );
+
+      const uniqueCustomers =
+        new Set(
+          orders.map(
+            (order) =>
+              order.user.toString()
+          )
+        );
+
+      res.status(200).json({
+
+        totalProducts,
+
+        totalOrders,
+
+        totalRevenue,
+
+        totalCustomers:
+          uniqueCustomers.size
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          error.message
+      });
+
+    }
+
+};
+
 // Place Order
 const placeOrder = async (req, res) => {
   try {
-    const userId =req.user._id;
+    const userId = req.user._id;
+
+const {
+
+  customerName,
+
+  phone,
+
+  shippingAddress
+
+} = req.body;
 
     // get cart items
     const cartItems = await Cart.find({ user: userId }).populate("product");
@@ -35,11 +127,21 @@ const placeOrder = async (req, res) => {
     );
 
     // create order
-    const order = await Order.create({
-      user: userId,
-      items,
-      totalPrice,
-    });
+   const order = await Order.create({
+
+  user: userId,
+
+  items,
+
+  totalPrice,
+
+  customerName,
+
+  phone,
+
+  shippingAddress
+
+});
 
     // 🧠 GET USER DETAILS
     const user = await User.findById(userId);
@@ -125,14 +227,19 @@ const placeBuyNowOrder =
 
       const {
 
-        userId,
+  userId,
 
-        productId,
+  productId,
 
-        quantity,
+  quantity,
 
-      } = req.body;
+  customerName,
 
+  phone,
+
+  shippingAddress
+
+} = req.body;
       const Product =
         require("../models/Product");
 
@@ -151,28 +258,30 @@ const placeBuyNowOrder =
       }
 
       const order =
-        await Order.create({
+  await Order.create({
 
-          user: userId,
+    user: userId,
 
-          items: [
+    items: [
 
-            {
+      {
+        product: productId,
+        quantity,
+      },
 
-              product:
-                productId,
+    ],
 
-              quantity,
+    totalPrice:
+      product.price *
+      quantity,
 
-            },
+    customerName,
 
-          ],
+    phone,
 
-          totalPrice:
-            product.price *
-            quantity,
+    shippingAddress
 
-        });
+  });
 
       res.status(201).json({
 
@@ -256,10 +365,14 @@ const getVendorOrders = async (req, res) => {
 
 };
 
+//
+
+
 module.exports = {
   placeOrder,
   getUserOrders,
   updateOrderStatus,
   placeBuyNowOrder,
-  getVendorOrders
+  getVendorOrders,
+  getVendorDashboardStats
 };

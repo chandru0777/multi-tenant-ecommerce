@@ -1,19 +1,34 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-function VendorRoute({ children }) {
+function VendorRoute({
+  children
+}) {
 
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
 
   if (!user) {
 
-    return <Navigate to="/login" />;
+    return (
+      <Navigate
+        to="/login"
+      />
+    );
 
   }
 
-  if (user.role !== "vendor") {
+  if (
+    user.role !==
+    "vendor"
+  ) {
 
-    return <Navigate to="/" />;
+    return (
+      <Navigate
+        to="/"
+      />
+    );
 
   }
 
@@ -21,4 +36,4 @@ function VendorRoute({ children }) {
 
 }
 
-export default VendorRoute;
+export default VendorRoute; 

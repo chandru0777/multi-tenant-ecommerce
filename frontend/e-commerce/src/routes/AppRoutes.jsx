@@ -20,6 +20,9 @@ import AdminOrders from "../pages/AdminOrders";
 import AdminDashboard from "../pages/AdminDashboard";
 import CreateStore from "../pages/CreateStore";
 import MyStore from "../pages/MyStore";
+import ProtectedRoute from "../routes/ProtectedRoute";
+import VendorRoute from "../routes/VendorRoute";
+import AdminRoute from "../routes/AdminRoute";
 
 
 function AppRoutes() {
@@ -44,31 +47,50 @@ function AppRoutes() {
           element={<SearchResults />}
         />
 
-        <Route path="/cart" element={<Cart />} />
+       <Route
+  path="/cart"
+  element={
+    <ProtectedRoute>
+      <Cart />
+    </ProtectedRoute>
+  }
+/>
 
         <Route path="/login" element={<Login />} />
 
         <Route path="/signup" element={<Signup />} />
 
-        <Route
+      <Route
           path="/checkout"
-          element={<Checkout />}
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
         />
         <Route
             path="/my-orders"
-            element={<MyOrders />}
+            element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          }
         />
         <Route
             path="/vendor"
             element={
-              <VendorDashboard />
+              <ProtectedRoute>
+                <VendorDashboard />
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/vendor/products"
             element={
-              <VendorProducts/>
+              <ProtectedRoute>
+                <VendorProducts/>
+              </ProtectedRoute>
             }
             />
 
@@ -77,7 +99,9 @@ function AppRoutes() {
               path="/vendor/add-product"
 
               element={
-                <AddProduct/>
+                <ProtectedRoute>
+                  <AddProduct/>
+                </ProtectedRoute>
               }
 
               />
@@ -85,43 +109,71 @@ function AppRoutes() {
 
               path="/vendor/edit-product/:id"
               element={
-                <EditProduct/>
+                <ProtectedRoute>
+                  <EditProduct/>
+                </ProtectedRoute>
               }
               />
               <Route
               path="/vendor/orders"
               element={
-                <VendorOrders />
+               <ProtectedRoute>
+                 <VendorOrders />
+               </ProtectedRoute>
               }
             />
             <Route
             path="/admin/users"
-            element={<AdminUsers />}
+            element={
+            <ProtectedRoute>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
           />
 
           <Route
             path="/admin/products"
-            element={<AdminProducts />}
+            element={
+            <ProtectedRoute>
+              <AdminProducts />
+            </ProtectedRoute>
+          }
           />
 
           <Route
           path ="/admin/orders"
-          element={<AdminOrders/>}
+          element={
+          <ProtectedRoute>
+            <AdminOrders/>
+          </ProtectedRoute>
+        }
           />
 
           <Route
             path="/admin"
-            element={<AdminDashboard />}
+            element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
           />
 
           <Route
             path="/vendor/create-store"
-            element={<CreateStore />}
+            element={
+            <ProtectedRoute>
+              <CreateStore />
+            </ProtectedRoute>
+          }
           />
 
           <Route
             path="/vendor/store"
-            element={<MyStore />}
+            element={
+            <ProtectedRoute>
+              <MyStore />
+            </ProtectedRoute>
+          }
           />
 
       </Routes>

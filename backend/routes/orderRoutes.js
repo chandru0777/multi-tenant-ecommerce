@@ -18,7 +18,9 @@ const {
 
   placeBuyNowOrder,
 
-  getVendorOrders
+  getVendorOrders,
+
+  getVendorDashboardStats
 
 } = require("../controllers/orderController");
 
@@ -64,6 +66,13 @@ router.put(
   "/:id",
   protect,
   updateOrderStatus
+);
+
+router.get(
+  "/vendor-dashboard-stats",
+  protect,
+  authorizeRoles("vendor"),
+  getVendorDashboardStats
 );
 
 module.exports = router;

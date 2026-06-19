@@ -199,7 +199,27 @@ function VendorOrders() {
 
                     </div>
 
-                    <div className="mb-4">
+                    <div>
+
+  <p className="font-bold">
+    Address
+  </p>
+
+  <p className="text-sm text-gray-500">
+    {order.user?.email}
+  </p>
+
+  <p className="text-sm text-gray-500">
+    {order.phone}
+  </p>
+
+  <p className="text-sm text-gray-500">
+    {order.shippingAddress}
+  </p>
+
+</div>
+
+                    <div className="mb-2 mt-5">
 
                       <h3
                         className="

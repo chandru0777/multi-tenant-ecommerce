@@ -27,6 +27,21 @@ const orderSchema = new mongoose.Schema(
       default: "pending",
     },
 
+    shippingAddress: {
+  type: String,
+  required: true
+},
+
+phone: {
+  type: String,
+  required: true
+},
+
+customerName: {
+  type: String,
+  required: true
+},
+
     // ✅ PAYMENT FIELDS (ADDED)
     paymentStatus: {
       type: String,
