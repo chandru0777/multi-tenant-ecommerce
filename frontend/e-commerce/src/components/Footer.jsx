@@ -32,7 +32,7 @@ function Footer() {
         {/* About */}
         <div>
           <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-5">
-            About
+            About us
           </h3>
           <ul className="space-y-3 text-sm">
             {["Contact Us", "About Us", "Careers", "Press"].map((item) => (
