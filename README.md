@@ -1,184 +1,125 @@
 #  ShopEase - Multi Vendor E-Commerce Platform
 
-![React](https://img.shields.io/badge/React-19-blue?logo=react)
-![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?logo=mongodb)
-![JWT](https://img.shields.io/badge/Auth-JWT-orange)
-![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-Styled-38B2AC?logo=tailwind-css)
+A full-stack **Multi Vendor E-Commerce Platform** built using the **MERN Stack** with separate modules for **Customer**, **Vendor**, and **Admin**.
 
-A **full-stack Multi Vendor E-Commerce Platform** built using the **MERN Stack (MongoDB, Express.js, React.js, Node.js)**. The platform provides separate modules for **Customers**, **Vendors**, and **Administrators**, enabling secure authentication, product management, order processing, analytics, and role-based access control.
+##  Features
 
----
-
-#  Project Overview
-
-ShopEase is designed to simulate a real-world multi-vendor e-commerce application where:
-
-- Customers can browse products, place orders, and track them.
-- Vendors can manage their stores, products, and customer orders.
-- Admins can manage users, vendors, products, and platform activities.
-
-The project follows a modular architecture with a REST API backend and a responsive React frontend.
-
----
-
-#  Features
-
-##  Customer
-
-- User Registration & Login
-- JWT Authentication
-- Browse Products
-- Search Products
-- Category Filtering
-- Product Details
-- Add to Cart
-- Buy Now
+###  Customer
+- User Authentication (JWT)
+- Browse & Search Products
+- Add to Cart & Buy Now
 - Checkout
-- Address Validation
-- Order History
-- Order Status Tracking
+- Order History & Tracking
 
----
-
-##  Vendor
-
+###  Vendor
 - Vendor Dashboard
 - Create Store
-- My Store
-- Add Products
-- Edit Products
-- Delete Products
-- Manage Products
+- Add / Edit / Delete Products
 - Manage Orders
-- Update Order Status
 - Dashboard Analytics
-- Recent Orders
 
----
-
-##  Admin
-
+###  Admin
 - Admin Dashboard
 - Manage Users
-- Change User Roles
 - Manage Products
 - Manage Orders
-- Platform Analytics
+- Role Management
 
 ---
 
-#  Authentication & Security
+##  Tech Stack
 
-- JWT Authentication
-- Password Encryption using bcrypt
-- Protected Routes
-- Role-Based Authorization
-- Secure REST APIs
-- Vendor Resource Protection
-- Admin Access Control
-
----
-
-#  Tech Stack
-
-## Frontend
-
+**Frontend**
 - React.js
-- React Router DOM
-- Context API
+- React Router
 - Tailwind CSS
-- JavaScript (ES6+)
+- Context API
 
-## Backend
-
+**Backend**
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
-- JWT
-- bcryptjs
-
-## Development Tools
-
-- Git
-- GitHub
-- Thunder Client
-- MongoDB Compass
-- VS Code
+- JWT Authentication
 
 ---
 
-#  Project Structure
+##  Screenshots
 
+### Home Page
+<img width="1346" height="590" alt="Screenshot 2026-06-27 172616" src="https://github.com/user-attachments/assets/695c4ab9-c1b9-40f2-948c-02b0e2fe2f9e" />
+<img width="1328" height="591" alt="Screenshot 2026-06-27 172751" src="https://github.com/user-attachments/assets/46c86a85-3be6-4f4b-acf6-f70298afb21a" />
+
+
+### Vendor Dashboard
+<img width="1337" height="584" alt="Screenshot 2026-06-27 172924" src="https://github.com/user-attachments/assets/301b42e6-3233-4bbc-b22d-a236fa2c30a8" />
+
+
+### Admin Dashboard
+
+<img width="1341" height="582" alt="Screenshot 2026-06-27 173226" src="https://github.com/user-attachments/assets/e7421538-bcb6-4048-a69b-ef6d8b1db4e9" />
+<img width="1346" height="571" alt="Screenshot 2026-06-27 173314" src="https://github.com/user-attachments/assets/5c480da8-a092-4512-ace2-9788eaddaf62" />
+
+
+### Checkout & Orders
+<img width="1326" height="583" alt="Screenshot 2026-06-27 173516" src="https://github.com/user-attachments/assets/f4aa7572-14d3-411d-bbc2-d1ba9e8ed0a4" />
+<img width="1328" height="589" alt="Screenshot 2026-06-27 173606" src="https://github.com/user-attachments/assets/6f353927-a551-4e01-bfc5-87106dd7bbde" />
+<img width="1339" height="560" alt="Screenshot 2026-06-27 173656" src="https://github.com/user-attachments/assets/be39f598-0cd2-4255-8368-ba8509d7aa2e" />
+
+
+
+
+---
+
+##  Installation
+
+```bash
+# Clone Repository
+git clone <https://github.com/chandru0777/multi-tenant-ecommerce>
+
+# Backend
+cd backend
+npm install
+npm run dev
+
+# Frontend
+cd frontend
+cd e-commerce
+npm install
+npm run dev
 ```
 
-ShopEase/
+---
 
-├── client/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── context/
-│ │ ├── layouts/
-│ │ ├── pages/
-│ │ ├── routes/
-│ │ ├── App.jsx
-│ │ └── main.jsx
-│
-├── server/
-│ ├── controllers/
-│ ├── middleware/
-│ ├── models/
-│ ├── routes/
-│ ├── config/
-│ ├── utils/
-│ └── server.js
+##  Environment Variables
 
+Create a `.env` file inside the `server` folder.
+
+```env
+PORT=8000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+RAZORPAY_KEY_ID=your_razorpay_key
+RAZORPAY_KEY_SECRET=your_razorpay_secret
 ```
 
 ---
 
-# 🗄 Database Models
+##  Project Status
 
-### User
-
-- Name
-- Email
-- Password
-- Role
-
-### Store
-
-- Store Name
-- Owner
-
-### Product
-
-- Name
-- Description
-- Category
-- Price
-- Stock
-- Image
-- Store
-
-### Cart
-
-- User
-- Product
-- Quantity
-
-### Order
-
-- User
-- Products
-- Quantity
-- Total Price
-- Customer Name
-- Phone Number
-- Shipping Address
-- Order Status
-- Payment Status
+- ✅ Authentication & Authorization
+- ✅ Customer Module
+- ✅ Vendor Module
+- ✅ Admin Module
+- ✅ Product Management
+- ✅ Store Management
+- ✅ Cart & Checkout
+- ✅ Order Management
+- ✅ Dashboard Analytics
 
 ---
 
+##  Developer
+
+**Chandru**  
+MERN Stack Developer
