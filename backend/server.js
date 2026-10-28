@@ -3,6 +3,9 @@ console.log("MY NEW SERVER FILE IS RUNNING");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const dns =require( "node:dns");
+
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 dotenv.config();
 
