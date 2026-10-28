@@ -6,6 +6,8 @@ import MainLayout from "../layouts/MainLayout";
 
 import ProductCard from "../components/ProductCard";
 
+import API_URL from "../api";
+
 function SearchResults() {
 
   const { query } = useParams();
@@ -26,7 +28,7 @@ function SearchResults() {
           const response =
             await fetch(
 
-`http://localhost:8000/api/products/search/${query}`
+`${API_URL}/api/products/search/${query}`
 
             );
 

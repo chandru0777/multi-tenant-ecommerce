@@ -3,6 +3,9 @@ import {  useAuth} from "../context/AuthContext";
 
 import {  Link,  useNavigate} from "react-router-dom";
 
+import API_URL from "../api";
+
+
 function Login() {
 
   const { login } =
@@ -35,7 +38,7 @@ function Login() {
   try {
 
     const response = await fetch(
-      "http://localhost:8000/api/auth/login",
+      `${API_URL}/api/auth/login`,
       {
         method: "POST",
         headers: {
@@ -75,7 +78,7 @@ function Login() {
 
         const storeResponse =
           await fetch(
-            "http://localhost:8000/api/store/my-store",
+            `${API_URL}/api/store/my-store`,
             {
               headers: {
                 Authorization:

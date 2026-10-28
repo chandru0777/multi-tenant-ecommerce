@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import API_URL from "../api";
 
 function AdminDashboard() {
 
@@ -27,7 +28,7 @@ function AdminDashboard() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/admin/dashboard-stats",
+            `${API_URL}/api/admin/dashboard-stats`,
             {
               headers: {
                 Authorization:

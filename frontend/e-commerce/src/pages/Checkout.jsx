@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import { useCart }from "../context/CartContext";
 
+import API_URL from "../api";
+
+
 function Checkout() {
   const { cartItems,fetchCart} = useCart();
 
@@ -85,7 +88,7 @@ const handlePlaceOrder = async () => {
     if (isBuyNow) {
 
       response = await fetch(
-        "http://localhost:8000/api/order/buy-now",
+        `${API_URL}/api/order/buy-now`,
         {
           method: "POST",
           headers: {

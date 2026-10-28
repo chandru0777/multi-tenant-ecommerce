@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
-
+import API_URL from "../api";
 function AddProduct() {
 
   const { token } = useAuth();
@@ -42,7 +42,7 @@ function AddProduct() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/products",
+            `${API_URL}/api/products`,
             {
               method: "POST",
 

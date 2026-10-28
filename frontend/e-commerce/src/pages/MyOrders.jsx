@@ -3,6 +3,7 @@ import {  useEffect,useState} from "react";
 import MainLayout from "../layouts/MainLayout";
 
 import {  useAuth} from "../context/AuthContext";
+import API_URL from "../api";
 
 function MyOrders() {
 
@@ -27,7 +28,7 @@ const {
           const response =
             await fetch(
 
-              "http://localhost:8000/api/order/my-orders",
+              `${API_URL}/api/order/my-orders`,
 
                 {
 

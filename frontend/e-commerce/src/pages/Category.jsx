@@ -6,6 +6,9 @@ import MainLayout from "../layouts/MainLayout";
 
 import ProductCard from "../components/ProductCard";
 
+import API_URL from "../api";
+
+
 function Category() {
 
   const { categoryName } = useParams();
@@ -26,7 +29,7 @@ function Category() {
           const response =
             await fetch(
 
-`http://localhost:8000/api/products/category/${categoryName}`
+`${API_URL}/api/products/category/${categoryName}`
 
             );
 

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import HeroSlider from "../components/HeroSlider";
 import ProductSection from "../components/ProductSection";
+import API_URL from "../api";
 
 /* ── Offer Banners ─────────────────────────────────────── */
 const OFFER_BANNERS = [
@@ -77,7 +78,7 @@ function Home() {
       try {
 
         const response = await fetch(
-          "http://localhost:8000/api/products"
+          `${API_URL}/api/products`
         );
 
         const data = await response.json();

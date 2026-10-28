@@ -18,6 +18,9 @@ import {
   useCart
 } from "../context/CartContext";
 
+import API_URL from "../api";
+
+
 function Cart() {
 
   const {
@@ -50,7 +53,7 @@ function Cart() {
 
         await fetch(
 
-`http://localhost:8000/api/cart/${cartId}`,
+`${API_URL}/api/cart/${cartId}`,
 
           {
 

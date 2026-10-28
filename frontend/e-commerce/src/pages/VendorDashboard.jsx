@@ -3,6 +3,7 @@ import { Link , useNavigate } from "react-router-dom";
 import { useEffect,useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
+import API_URL from "../api";
 
 
 const QUICK_ACTIONS = [
@@ -132,7 +133,7 @@ const checkStore = async () => {
 
     const response =
       await fetch(
-        "http://localhost:8000/api/store/my-store",
+        `${API_URL}/api/store/my-store`,
         {
           headers: {
             Authorization:

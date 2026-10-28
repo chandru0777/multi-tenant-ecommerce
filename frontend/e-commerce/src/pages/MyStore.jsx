@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
+import API_URL from "../api";
 
 function MyStore() {
 
@@ -22,7 +23,7 @@ function MyStore() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/store/my-store",
+            `${API_URL}/api/store/my-store`,
             {
               headers: {
                 Authorization:

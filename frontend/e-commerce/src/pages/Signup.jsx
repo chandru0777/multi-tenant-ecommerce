@@ -3,6 +3,8 @@ import {  useAuth} from "../context/AuthContext";
 
 import { Link, useNavigate} from "react-router-dom";
 
+import API_URL from "../api";
+
 function Signup() {
 
   const { login } =
@@ -41,7 +43,7 @@ function Signup() {
         const response =
           await fetch(
 
-"http://localhost:8000/api/auth/register",
+`${API_URL}/api/auth/register`,
 
             {
 

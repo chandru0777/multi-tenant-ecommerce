@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
+import API_URL from "../api";
 
 function AdminProducts() {
   const { token } = useAuth();
@@ -18,7 +19,7 @@ function AdminProducts() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/admin/products",
+        `${API_URL}/api/admin/products`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

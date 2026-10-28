@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import API_URL from "../api";
 
 function VendorProducts() {
   const { token } = useAuth();
@@ -19,7 +20,7 @@ function VendorProducts() {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:8000/api/products/vendor/my-products",
+        `${API_URL}/api/products/vendor/my-products`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await response.json();
@@ -37,7 +38,7 @@ function VendorProducts() {
     setDeletingId(productId);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/products/${productId}`,
+        `${API_URL}/api/products/${productId}`,
         { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await response.json();

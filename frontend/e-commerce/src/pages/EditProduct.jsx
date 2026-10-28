@@ -15,6 +15,9 @@ import {
   useAuth
 } from "../context/AuthContext";
 
+import API_URL from "../api";
+
+
 function EditProduct() {
 
   const { id } =
@@ -64,7 +67,7 @@ function EditProduct() {
         const response =
           await fetch(
 
-`http://localhost:8000/api/products/${id}`
+`${API_URL}/api/products/${id}`
 
           );
 

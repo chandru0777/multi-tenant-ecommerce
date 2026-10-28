@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 
 import { useAuth } from "../context/AuthContext";
+import API_URL from "../api";
 
 function VendorOrders() {
 
@@ -28,7 +29,7 @@ function VendorOrders() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/order/vendor-orders",
+            `${API_URL}/api/order/vendor-orders`,
             {
               headers: {
                 Authorization:
@@ -65,7 +66,7 @@ function VendorOrders() {
         const response =
           await fetch(
 
-`http://localhost:8000/api/order/${orderId}`,
+`${API_URL}http://localhost:8000/api/order/${orderId}`,
 
             {
 

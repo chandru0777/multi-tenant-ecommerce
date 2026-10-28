@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
+import API_URL from "../api";
 
 function CreateStore() {
 
@@ -27,7 +28,7 @@ function CreateStore() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/store",
+            `${API_URL}/api/store`,
             {
               method: "POST",
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import { useAuth } from "../context/AuthContext";
+import API_URL from "../api";
 
 function AdminOrders() {
 
@@ -29,7 +30,7 @@ function AdminOrders() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/admin/orders",
+            `${API_URL}/api/admin/orders`,
             {
               headers: {
                 Authorization:
